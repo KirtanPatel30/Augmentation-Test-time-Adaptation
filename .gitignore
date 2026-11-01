@@ -8,7 +8,7 @@ __pycache__/
 data/
 models/
 checkpoints/
-results/preds/
+preds/
 *.tar
 *.npy
 smoke/

@@ -1,0 +1,5 @@
+run                                                          corr err   sev5    ECE  harm collapse
+rb_standard_wrn28_tent_episodic_bs200_lr0.0001_tune             15.80  15.80  10.70 -    0.127
+rb_standard_wrn28_tent_episodic_bs200_lr0.0003_tune             15.34  15.34  10.49 -    0.131
+rb_standard_wrn28_tent_episodic_bs200_lr0.001_tune              14.59  14.59  10.30 -    0.141
+rb_standard_wrn28_tent_episodic_bs200_lr0.003_tune              16.11  16.11  12.33 -    0.192

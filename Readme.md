@@ -35,6 +35,8 @@ Both are free and public.
 
 ## Stage 2: test-time adaptation and evaluation (Member 2)
 
+Progress, results so far and next steps: [docs/PROGRESS_REPORT.md](docs/PROGRESS_REPORT.md).
+
 ```
 tta/data.py      CIFAR-10 / CIFAR-10-C loading (images in [0, 1])
 tta/models.py    CIFAR ResNet-18 (normalizes inside), checkpoint loader, RobustBench models

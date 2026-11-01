@@ -1,0 +1,5 @@
+run,model,method,protocol,batch_size,lr,shuffle_seed,n_conditions,clean_error,corruption_error,sev5_error,ece,harm_rate,help_rate,collapse_max,collapse_mean,seconds
+rb_standard_wrn28_tent_episodic_bs200_lr0.0001_tune,rb_standard_wrn28,tent,episodic,200,0.0,,4,,15.798,15.798,10.699,,,0.127,0.114,178.15
+rb_standard_wrn28_tent_episodic_bs200_lr0.0003_tune,rb_standard_wrn28,tent,episodic,200,0.0,,4,,15.34,15.34,10.493,,,0.131,0.114,177.097
+rb_standard_wrn28_tent_episodic_bs200_lr0.001_tune,rb_standard_wrn28,tent,episodic,200,0.001,,4,,14.59,14.59,10.299,,,0.141,0.116,177.604
+rb_standard_wrn28_tent_episodic_bs200_lr0.003_tune,rb_standard_wrn28,tent,episodic,200,0.003,,4,,16.107,16.107,12.325,,,0.192,0.136,177.638

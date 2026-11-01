@@ -1,0 +1,17 @@
+run,model,method,protocol,batch_size,lr,shuffle_seed,corruption,severity,error,ece,seconds,ms_per_batch
+rb_standard_wrn28_tent_episodic_bs200_lr0.0001_tune,rb_standard_wrn28,tent,episodic,200,0.0001,,speckle_noise,5,25.73,17.812,46.259,925.19
+rb_standard_wrn28_tent_episodic_bs200_lr0.0001_tune,rb_standard_wrn28,tent,episodic,200,0.0001,,gaussian_blur,5,14.51,9.671,43.171,863.43
+rb_standard_wrn28_tent_episodic_bs200_lr0.0001_tune,rb_standard_wrn28,tent,episodic,200,0.0001,,spatter,5,14.63,9.877,44.492,889.83
+rb_standard_wrn28_tent_episodic_bs200_lr0.0001_tune,rb_standard_wrn28,tent,episodic,200,0.0001,,saturate,5,8.32,5.435,43.819,876.39
+rb_standard_wrn28_tent_episodic_bs200_lr0.0003_tune,rb_standard_wrn28,tent,episodic,200,0.0003,,speckle_noise,5,24.95,17.394,45.257,905.14
+rb_standard_wrn28_tent_episodic_bs200_lr0.0003_tune,rb_standard_wrn28,tent,episodic,200,0.0003,,gaussian_blur,5,14.15,9.564,43.319,866.38
+rb_standard_wrn28_tent_episodic_bs200_lr0.0003_tune,rb_standard_wrn28,tent,episodic,200,0.0003,,spatter,5,14.11,9.657,44.401,888.02
+rb_standard_wrn28_tent_episodic_bs200_lr0.0003_tune,rb_standard_wrn28,tent,episodic,200,0.0003,,saturate,5,8.15,5.359,43.714,874.29
+rb_standard_wrn28_tent_episodic_bs200_lr0.001_tune,rb_standard_wrn28,tent,episodic,200,0.001,,speckle_noise,5,23.46,16.755,45.468,909.37
+rb_standard_wrn28_tent_episodic_bs200_lr0.001_tune,rb_standard_wrn28,tent,episodic,200,0.001,,gaussian_blur,5,13.53,9.512,43.407,868.14
+rb_standard_wrn28_tent_episodic_bs200_lr0.001_tune,rb_standard_wrn28,tent,episodic,200,0.001,,spatter,5,13.25,9.395,44.485,889.71
+rb_standard_wrn28_tent_episodic_bs200_lr0.001_tune,rb_standard_wrn28,tent,episodic,200,0.001,,saturate,5,8.13,5.543,43.845,876.9
+rb_standard_wrn28_tent_episodic_bs200_lr0.003_tune,rb_standard_wrn28,tent,episodic,200,0.003,,speckle_noise,5,26.26,20.362,45.148,902.96
+rb_standard_wrn28_tent_episodic_bs200_lr0.003_tune,rb_standard_wrn28,tent,episodic,200,0.003,,gaussian_blur,5,15.47,11.869,43.622,872.44
+rb_standard_wrn28_tent_episodic_bs200_lr0.003_tune,rb_standard_wrn28,tent,episodic,200,0.003,,spatter,5,12.66,9.427,44.374,887.48
+rb_standard_wrn28_tent_episodic_bs200_lr0.003_tune,rb_standard_wrn28,tent,episodic,200,0.003,,saturate,5,10.03,7.633,44.102,882.05
