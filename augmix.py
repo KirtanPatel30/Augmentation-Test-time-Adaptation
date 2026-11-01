@@ -91,12 +91,13 @@ class AugMixData(torch.utils.data.Dataset):
         return augmix(im, self.tt), y
 
 
+def kl(lp, lm):
+    return (lp.exp() * (lp - lm)).sum(1).mean()
+
+
 def jsd(a, b, c):
-    pa = F.softmax(a, 1)
-    pb = F.softmax(b, 1)
-    pc = F.softmax(c, 1)
-    pm = torch.clamp((pa + pb + pc) / 3, 1e-7, 1).log()
-    ka = F.kl_div(pm, pa, reduction="batchmean")
-    kb = F.kl_div(pm, pb, reduction="batchmean")
-    kc = F.kl_div(pm, pc, reduction="batchmean")
-    return (ka + kb + kc) / 3
+    la = F.log_softmax(a, 1)
+    lb = F.log_softmax(b, 1)
+    lc = F.log_softmax(c, 1)
+    lm = torch.clamp((la.exp() + lb.exp() + lc.exp()) / 3, 1e-7, 1).log()
+    return (kl(la, lm) + kl(lb, lm) + kl(lc, lm)) / 3
