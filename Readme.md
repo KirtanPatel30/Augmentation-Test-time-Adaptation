@@ -56,7 +56,7 @@ python scripts/smoke_test.py
 Full runs on a GPU:
 
 ```bash
-CIFAR10C_HF_REPO=yashP54/cifar10-c bash scripts/download_cifar10c.sh   # HF mirror, Zenodo fallback
+CIFAR10C_HF_REPO=YashP54/cifar10-c bash scripts/download_cifar10c.sh   # HF mirror, Zenodo fallback
 python eval.py --model rb_standard_wrn28 --method tent --severities 5   # E1 check
 python eval.py --model checkpoints/standard_s1.pt --method tent --protocol continual
 python analyze.py
