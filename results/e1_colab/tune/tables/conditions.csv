@@ -1,0 +1,17 @@
+run,corruption,severity,error,ece
+rb_standard_wrn28_tent_episodic_bs200_lr0.0001_tune,speckle_noise,5,25.73,17.812
+rb_standard_wrn28_tent_episodic_bs200_lr0.0001_tune,gaussian_blur,5,14.51,9.672
+rb_standard_wrn28_tent_episodic_bs200_lr0.0001_tune,spatter,5,14.63,9.877
+rb_standard_wrn28_tent_episodic_bs200_lr0.0001_tune,saturate,5,8.32,5.435
+rb_standard_wrn28_tent_episodic_bs200_lr0.0003_tune,speckle_noise,5,24.95,17.394
+rb_standard_wrn28_tent_episodic_bs200_lr0.0003_tune,gaussian_blur,5,14.15,9.564
+rb_standard_wrn28_tent_episodic_bs200_lr0.0003_tune,spatter,5,14.11,9.657
+rb_standard_wrn28_tent_episodic_bs200_lr0.0003_tune,saturate,5,8.15,5.359
+rb_standard_wrn28_tent_episodic_bs200_lr0.001_tune,speckle_noise,5,23.46,16.754
+rb_standard_wrn28_tent_episodic_bs200_lr0.001_tune,gaussian_blur,5,13.52,9.503
+rb_standard_wrn28_tent_episodic_bs200_lr0.001_tune,spatter,5,13.25,9.395
+rb_standard_wrn28_tent_episodic_bs200_lr0.001_tune,saturate,5,8.13,5.542
+rb_standard_wrn28_tent_episodic_bs200_lr0.003_tune,speckle_noise,5,26.25,20.352
+rb_standard_wrn28_tent_episodic_bs200_lr0.003_tune,gaussian_blur,5,15.48,11.879
+rb_standard_wrn28_tent_episodic_bs200_lr0.003_tune,spatter,5,12.67,9.437
+rb_standard_wrn28_tent_episodic_bs200_lr0.003_tune,saturate,5,10.03,7.633

@@ -1,0 +1,7 @@
+run                                                          corr err   sev5    ECE  harm collapse
+rb_augmix_wrn40_bn_episodic_bs200                               14.49  14.49   4.87  0.20    0.144
+rb_augmix_wrn40_none_episodic_bs200                             18.27  18.27  10.18 -    0.334
+rb_augmix_wrn40_tent_episodic_bs200_lr0.001                     12.08  12.08   5.41  0.00    0.148
+rb_standard_wrn28_bn_episodic_bs200                             20.44  20.44  13.77  0.00    0.143
+rb_standard_wrn28_none_episodic_bs200                           43.51  43.51  34.00 -    0.579
+rb_standard_wrn28_tent_episodic_bs200_lr0.001                   18.58  18.58  13.34  0.00    0.153
