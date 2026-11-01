@@ -50,6 +50,7 @@ results/        Small result files (timing, summaries)
 | Run | Clean acc. | Hours (T4) |
 |---|---|---|
 | Standard, seed 1 | 95.08% | 0.65 |
+| Standard, seed 2 | 94.97% | 0.58 |
 
 Time per epoch on a T4 (2 CPU workers): standard 21 s, cutmix 23 s, augmix_nojsd 91 s, augmix 181 s.
 
