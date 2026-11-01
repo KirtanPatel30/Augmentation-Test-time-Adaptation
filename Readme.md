@@ -33,6 +33,35 @@ Adjusting while testing can sometimes go wrong. For example, it can fail when th
 
 Both are free and public.
 
+## Repository layout
+
+```
+model.py        ResNet-18 for 32x32 images (takes images in [0, 1])
+augmix.py       AugMix ops (no brightness/contrast/color/sharpness) and JSD loss
+train.py        Train one model: standard, cutmix, augmix, or augmix_nojsd
+time_epochs.py  Time 2 epochs of each method -> results/epoch_timing.csv
+```
+
+## Quick start (training)
+
+```bash
+pip install -r requirements.txt
+python train.py --method standard --seed 1
+python train.py --method augmix --seed 1
+python train.py --method augmix_nojsd --seed 1
+python train.py --method cutmix --seed 1
+```
+
+Quick test on a laptop (5 batches per epoch, 1 epoch):
+
+```bash
+python train.py --method standard --fast 5 --stop 1 --out runs/test
+```
+
+If training stops, run the same command again. It continues from `runs/<method>_seed<N>/last.pt`.
+
+See [docs/member1_training.md](docs/member1_training.md) for Colab / Kaggle steps.
+
 ## Code we build on
 
 - [AugMix](https://github.com/google-research/augmix)
