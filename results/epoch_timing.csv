@@ -1,0 +1,5 @@
+method,device,sec_per_epoch,hours_for_100_epochs
+standard,Tesla T4,21.0,0.58
+cutmix,Tesla T4,23.0,0.64
+augmix_nojsd,Tesla T4,91.0,2.53
+augmix,Tesla T4,180.6,5.02

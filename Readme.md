@@ -40,7 +40,18 @@ model.py        ResNet-18 for 32x32 images (takes images in [0, 1])
 augmix.py       AugMix ops (no brightness/contrast/color/sharpness) and JSD loss
 train.py        Train one model: standard, cutmix, augmix, or augmix_nojsd
 time_epochs.py  Time 2 epochs of each method -> results/epoch_timing.csv
+test_ops.py     Checks AugMix never uses brightness/contrast/color/sharpness
+colab_train.ipynb  Train one model on Colab (set METHOD and SEED)
+results/        Small result files (timing, summaries)
 ```
+
+## Stage 1 progress
+
+| Run | Clean acc. | Hours (T4) |
+|---|---|---|
+| Standard, seed 1 | 95.08% | 0.65 |
+
+Time per epoch on a T4 (2 CPU workers): standard 21 s, cutmix 23 s, augmix_nojsd 91 s, augmix 181 s.
 
 ## Quick start (training)
 
