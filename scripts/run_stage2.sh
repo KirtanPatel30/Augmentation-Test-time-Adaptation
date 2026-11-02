@@ -4,14 +4,24 @@
 #
 #   nohup bash scripts/run_stage2.sh checkpoints/*/final.pt > results/run_stage2.log 2>&1 &
 #   tail -f results/run_stage2.log
+#
+# Optional environment variables:
+#   OUT=dir         where results go (default: results)
+#   EVAL_ARGS=...   extra eval.py flags, e.g. for a quick test:
+#                   EVAL_ARGS="--n-examples 200 --corruptions gaussian_noise,fog"
 set -uo pipefail
 export PYTHONUNBUFFERED=1  # so the log shows each condition as it finishes
 if [ $# -eq 0 ]; then
   echo "usage: bash scripts/run_stage2.sh <checkpoint.pt> [...]" >&2
   exit 1
 fi
+OUT="${OUT:-results}"
+read -r -a EXTRA <<< "${EVAL_ARGS:-}"
 
-run() { echo "=== $(date +%H:%M:%S) python eval.py $*"; python eval.py "$@" || echo "!!! FAILED: $*"; }
+run() {
+  echo "=== $(date +%H:%M:%S) python eval.py $*"
+  python eval.py "$@" --out-dir "$OUT" ${EXTRA[@]+"${EXTRA[@]}"} || echo "!!! FAILED: $*"
+}
 
 for ckpt in "$@"; do
   # E2 + E3: clean + all 75 conditions, episodic
@@ -30,5 +40,5 @@ for ckpt in "$@"; do
 done
 
 echo "=== $(date +%H:%M:%S) python analyze.py"
-python analyze.py
+python analyze.py --results "$OUT"
 echo "=== $(date +%H:%M:%S) done"
