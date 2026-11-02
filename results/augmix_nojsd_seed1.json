@@ -1,0 +1,8 @@
+{
+  "run": "augmix_nojsd_seed1",
+  "clean_acc": 0.9531,
+  "clean_err": 0.0469,
+  "hours": 1.129,
+  "sec_per_epoch": 40.63,
+  "device": "Tesla T4 (Kaggle, 4 CPU workers)"
+}

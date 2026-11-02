@@ -1,0 +1,8 @@
+{
+  "run": "standard_seed1",
+  "clean_acc": 0.9508,
+  "clean_err": 0.0492,
+  "hours": 0.649,
+  "sec_per_epoch": 23.37,
+  "device": "Tesla T4"
+}
