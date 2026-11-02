@@ -76,6 +76,8 @@ If training stops, run the same command again. It continues from `runs/<method>_
 
 See [docs/member1_training.md](docs/member1_training.md) for Colab / Kaggle steps.
 
+Full Stage 1 progress report: [docs/progress_report.md](docs/progress_report.md).
+
 ## Code we build on
 
 - [AugMix](https://github.com/google-research/augmix)
