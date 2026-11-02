@@ -5,6 +5,7 @@
 #   nohup bash scripts/run_stage2.sh checkpoints/*/final.pt > results/run_stage2.log 2>&1 &
 #   tail -f results/run_stage2.log
 set -uo pipefail
+export PYTHONUNBUFFERED=1  # so the log shows each condition as it finishes
 if [ $# -eq 0 ]; then
   echo "usage: bash scripts/run_stage2.sh <checkpoint.pt> [...]" >&2
   exit 1
