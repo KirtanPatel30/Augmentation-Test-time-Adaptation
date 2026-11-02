@@ -32,13 +32,8 @@ The checkpoints go to Google Drive. If the session stops, run the same cells aga
 
 ## Kaggle
 
-Turn on GPU and Internet in the notebook settings.
-
-```python
-!git clone https://github.com/KirtanPatel30/Augmentation-Test-time-Adaptation.git
-%cd Augmentation-Test-time-Adaptation
-!python train.py --method augmix --seed 1 --workers 4 --out /kaggle/working/runs
-```
+Use `kaggle_train.ipynb`. Settings: GPU T4 x2, Internet on, and add the `cifar10-python` dataset (your uploaded `cifar-10-python.tar.gz`) as input.
+Set METHOD and SEED, then Save Version > Save & Run All. Download `final.pt` and `summary.json` from the Output tab and put them in `cmpe252/runs/<method>_seed<N>/` on Drive.
 
 ## Week 1: time 2 epochs of each method
 
