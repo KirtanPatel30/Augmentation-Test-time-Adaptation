@@ -6,6 +6,8 @@ same evaluation code works for our ResNet-18 checkpoints and RobustBench models.
 The ResNet-18 here is the usual CIFAR version (3x3 first conv, no max-pool).
 Stage 1 checkpoints must use the same module names; see ``load_resnet18``.
 """
+import os
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -106,6 +108,19 @@ def load_resnet18(checkpoint_path, device="cpu"):
     if missing or unexpected:
         raise RuntimeError(f"checkpoint mismatch: missing={missing}, unexpected={unexpected}")
     return model.to(device)
+
+
+def model_tag(name):
+    """Short name for a model in run names and tables.
+
+    Stage 1 saves every model as ``runs/<method>_seed<N>/final.pt``, so for
+    ``final.pt`` / ``last.pt`` the folder name is the tag.
+    """
+    stem = os.path.splitext(os.path.basename(name))[0]
+    if stem in ("final", "last"):
+        parent = os.path.basename(os.path.dirname(os.path.abspath(name)))
+        return parent if stem == "final" else f"{parent}_last"
+    return stem
 
 
 def load_model(name, device="cpu", model_dir="models"):

@@ -30,7 +30,7 @@ import torch
 from tta.data import CORRUPTIONS, EXTRA_CORRUPTIONS, load_condition
 from tta.methods import build_method
 from tta.metrics import ece, error
-from tta.models import load_model
+from tta.models import load_model, model_tag
 from tta.streams import PROTOCOLS, REFERENCE_BATCH_SIZE, build_conditions, run_stream
 
 
@@ -42,10 +42,6 @@ def pick_device(name):
     if torch.backends.mps.is_available():
         return torch.device("mps")
     return torch.device("cpu")
-
-
-def model_tag(name):
-    return os.path.splitext(os.path.basename(name))[0]
 
 
 def parse_args(argv=None):
