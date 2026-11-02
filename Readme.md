@@ -33,6 +33,53 @@ Adjusting while testing can sometimes go wrong. For example, it can fail when th
 
 Both are free and public.
 
+## Repository layout
+
+```
+model.py        ResNet-18 for 32x32 images (takes images in [0, 1])
+augmix.py       AugMix ops (no brightness/contrast/color/sharpness) and JSD loss
+train.py        Train one model: standard, cutmix, augmix, or augmix_nojsd
+time_epochs.py  Time 2 epochs of each method -> results/epoch_timing.csv
+test_ops.py     Checks AugMix never uses brightness/contrast/color/sharpness
+colab_train.ipynb  Train one model on Colab (set METHOD and SEED)
+results/        Small result files (timing, summaries)
+```
+
+## Stage 1 progress
+
+| Run | Clean acc. | Hours (T4) |
+|---|---|---|
+| Standard, seed 1 | 95.08% | 0.65 |
+| Standard, seed 2 | 94.97% | 0.58 |
+| AugMix + JSD, seed 1 | 95.21% | 3.93 |
+| AugMix + JSD, seed 2 | 95.29% | 2.24 (Kaggle) |
+| AugMix without JSD, seed 1 | 95.31% | 1.13 (Kaggle) |
+| CutMix, seed 1 | 96.18% | 0.52 (Kaggle) |
+
+Time per epoch on a T4 (2 CPU workers): standard 21 s, cutmix 23 s, augmix_nojsd 91 s, augmix 181 s.
+
+## Quick start (training)
+
+```bash
+pip install -r requirements.txt
+python train.py --method standard --seed 1
+python train.py --method augmix --seed 1
+python train.py --method augmix_nojsd --seed 1
+python train.py --method cutmix --seed 1
+```
+
+Quick test on a laptop (5 batches per epoch, 1 epoch):
+
+```bash
+python train.py --method standard --fast 5 --stop 1 --out runs/test
+```
+
+If training stops, run the same command again. It continues from `runs/<method>_seed<N>/last.pt`.
+
+See [docs/member1_training.md](docs/member1_training.md) for Colab / Kaggle steps.
+
+Full Stage 1 progress report: [docs/progress_report.md](docs/progress_report.md).
+
 ## Stage 2: test-time adaptation and evaluation (Member 2)
 
 Progress, results so far and next steps: [docs/stage2_report.md](docs/stage2_report.md).
@@ -60,13 +107,12 @@ Full runs on a GPU:
 ```bash
 CIFAR10C_HF_REPO=YashP54/cifar10-c bash scripts/download_cifar10c.sh   # HF mirror, Zenodo fallback
 python eval.py --model rb_standard_wrn28 --method tent --severities 5   # E1 check
-python eval.py --model checkpoints/standard_s1.pt --method tent --protocol continual
+python eval.py --model runs/standard_seed1/final.pt --method tent --protocol continual
 python analyze.py
 ```
 
-**Checkpoint format for Stage 1:** save `{"model": model.state_dict(), ...}` from
-`tta.models.ResNet18` (or the same module names). The model takes images in [0, 1]
-and normalizes inside, so training must not normalize in the data loader.
+Stage 1 checkpoints (`runs/<method>_seed<N>/final.pt` from `train.py`) load directly:
+`model.py` and `tta/models.py` use the same layer names and both normalize inside the model.
 
 ## Code we build on
 

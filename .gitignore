@@ -4,11 +4,20 @@ __pycache__/
 .DS_Store
 .ipynb_checkpoints/
 
-# Large files: data sets, model weights, raw predictions
+# Data sets (download with torchvision / Hugging Face / Zenodo)
 data/
-models/
-checkpoints/
-preds/
 *.tar
 *.npy
+
+# Model weights and run folders (too large for git; keep them on Drive/Kaggle)
+runs/
+models/
+checkpoints/
+*.pt
+*.pth
+*.tmp
+
+# Raw Stage 2 predictions and smoke-test output; small result files ARE tracked
+preds/
 smoke/
+!results/
