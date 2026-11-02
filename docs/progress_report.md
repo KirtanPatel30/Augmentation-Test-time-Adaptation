@@ -31,7 +31,7 @@ This report covers Stage 1.
 | Time 2 epochs of each method | Done |
 | Train Standard, 2 seeds | Done |
 | Train AugMix + JSD, 2 seeds | Done |
-| Train AugMix without JSD, 1 seed | Next |
+| Train AugMix without JSD, 1 seed | Done |
 | Train CutMix, 1 seed | Next |
 | Record how much compute each run cost | Done so far, updated after each run |
 | Weeks 5–6: help with hard test conditions, confidence intervals and condition maps | Later |
@@ -75,7 +75,7 @@ This report covers Stage 1.
 | Standard, seed 2 | 94.97% | 0.58 | Colab T4 |
 | AugMix + JSD, seed 1 | 95.21% | 3.93 | Colab T4 (epochs 1–85) + Kaggle T4 (epochs 86–100) |
 | AugMix + JSD, seed 2 | 95.29% | 2.24 | Kaggle T4 |
-| AugMix without JSD, seed 1 | – | – | not run yet |
+| AugMix without JSD, seed 1 | 95.31% | 1.13 | Kaggle T4 |
 | CutMix, seed 1 | – | – | not run yet |
 
 **What this shows so far:**
@@ -99,9 +99,9 @@ Every AugMix model was re-checked on the laptop after downloading, and it gave t
 | AugMix without JSD | 91 s | 2.53 h |
 | AugMix + JSD | 181 s | 5.02 h |
 
-AugMix is slow because the edits are done on the CPU, not the GPU. Kaggle gives 4 CPU workers instead of 2, so AugMix + JSD took **81 s per epoch on Kaggle**, more than 2x faster than Colab.
+AugMix is slow because the edits are done on the CPU, not the GPU. Kaggle gives 4 CPU workers instead of 2, so AugMix + JSD took **81 s per epoch on Kaggle** and AugMix without JSD took **41 s per epoch**, both more than 2x faster than Colab.
 
-**GPU hours used so far:** about **7.4 hours** of training, plus about 0.2 hours for the timing runs. The 2 runs left should add about 2 more hours.
+**GPU hours used so far:** about **8.5 hours** of training, plus about 0.2 hours for the timing runs. The last run (CutMix) should add about 0.5 hours.
 
 ---
 
@@ -120,11 +120,10 @@ AugMix is slow because the edits are done on the CPU, not the GPU. Kaggle gives 
 
 ## 8. What is left
 
-1. Train **AugMix without JSD, seed 1** on Kaggle (about 1.5 h).
-2. Train **CutMix, seed 1** on Kaggle (about 0.5 h).
-3. Add those results and costs to this report.
-4. Put all 6 trained models (`final.pt`) in the shared Drive folder `cmpe252/runs/` for Yash.
-5. Weeks 5–6: help Yash with the hard test conditions, confidence intervals (bootstrap) and condition maps.
+1. Train **CutMix, seed 1** on Kaggle (about 0.5 h).
+2. Add its result and cost to this report.
+3. Put all 6 trained models (`final.pt`) in the shared Drive folder `cmpe252/runs/` for Yash.
+4. Weeks 5–6: help Yash with the hard test conditions, confidence intervals (bootstrap) and condition maps.
 
 ---
 

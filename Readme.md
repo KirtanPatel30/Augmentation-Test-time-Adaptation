@@ -53,6 +53,7 @@ results/        Small result files (timing, summaries)
 | Standard, seed 2 | 94.97% | 0.58 |
 | AugMix + JSD, seed 1 | 95.21% | 3.93 |
 | AugMix + JSD, seed 2 | 95.29% | 2.24 (Kaggle) |
+| AugMix without JSD, seed 1 | 95.31% | 1.13 (Kaggle) |
 
 Time per epoch on a T4 (2 CPU workers): standard 21 s, cutmix 23 s, augmix_nojsd 91 s, augmix 181 s.
 
