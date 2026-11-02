@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from tta.methods import BNAdapt, NoAdapt, Tent, collect_bn_params  # noqa: E402
 from tta.metrics import collapse_score, ece, error, paired_bootstrap  # noqa: E402
-from tta.models import ResNet18, load_resnet18  # noqa: E402
+from tta.models import ResNet18, load_resnet18, model_tag  # noqa: E402
 from tta.streams import build_conditions, run_stream  # noqa: E402
 
 
@@ -169,3 +169,10 @@ def test_resnet18_shape_params_and_checkpoint_roundtrip(tmp_path):
     loaded = load_resnet18(str(path)).eval()
     x = torch.rand(4, 3, 32, 32)
     assert torch.allclose(loaded(x), model.eval()(x), atol=1e-5)
+
+
+def test_model_tag_uses_run_folder_for_stage1_files():
+    assert model_tag("checkpoints/runs/augmix_seed1/final.pt") == "augmix_seed1"
+    assert model_tag("runs/augmix_seed1/last.pt") == "augmix_seed1_last"
+    assert model_tag("checkpoints/standard_s1.pt") == "standard_s1"
+    assert model_tag("rb_standard_wrn28") == "rb_standard_wrn28"

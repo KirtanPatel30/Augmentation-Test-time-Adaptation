@@ -20,6 +20,7 @@ from collections import defaultdict
 import numpy as np
 
 from tta.metrics import collapse_score, ece, error, paired_bootstrap
+from tta.models import model_tag
 
 
 def load_run(path):
@@ -145,7 +146,7 @@ def main(argv=None):
         clean = [r for r in rows if r["corruption"] == "clean"]
         col = collapse_score(meta["stream_preds"])
         run_rows.append(dict(
-            run=meta["run"], model=os.path.basename(meta["model"]), method=meta["method"],
+            run=meta["run"], model=model_tag(meta["model"]), method=meta["method"],
             protocol=meta["protocol"], batch_size=meta["batch_size"], lr=meta["lr"],
             shuffle_seed=meta["shuffle_seed"], n_conditions=len(corr),
             clean_error=clean[0]["error"] if clean else None,
