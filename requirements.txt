@@ -1,6 +1,7 @@
 torch>=2.1
 torchvision>=0.16
 numpy
+pillow
 matplotlib
 pytest
 git+https://github.com/RobustBench/robustbench.git

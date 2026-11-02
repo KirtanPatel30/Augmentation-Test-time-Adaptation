@@ -1,0 +1,8 @@
+{
+  "run": "cutmix_seed1",
+  "clean_acc": 0.9618,
+  "clean_err": 0.0382,
+  "hours": 0.518,
+  "sec_per_epoch": 18.66,
+  "device": "Tesla T4 (Kaggle, 4 CPU workers)"
+}
