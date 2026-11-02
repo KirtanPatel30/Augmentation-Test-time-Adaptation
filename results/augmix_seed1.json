@@ -1,0 +1,8 @@
+{
+  "run": "augmix_seed1",
+  "clean_acc": 0.9521,
+  "clean_err": 0.0479,
+  "hours": 3.933,
+  "sec_per_epoch": 141.58,
+  "device": "Tesla T4 (Colab epochs 1-85, Kaggle epochs 86-100)"
+}

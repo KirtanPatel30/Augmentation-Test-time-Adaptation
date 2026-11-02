@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Data sets (download with torchvision / Zenodo)
+data/
+
+# Checkpoints and run folders (too large for git; keep them on Drive/Kaggle)
+runs/
+*.pt
+*.pth
+*.tmp
+
+# Small result files ARE tracked
+!results/
