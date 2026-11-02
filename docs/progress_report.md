@@ -36,6 +36,21 @@ This report covers Stage 1.
 | Record how much compute each run cost | Done |
 | Weeks 5–6: help with hard test conditions, confidence intervals and condition maps | Later |
 
+### Where we are in the 8-week plan
+
+Stage 1 is **on time**. The plan says all models should be ready at the end of week 4, and they are.
+
+| Week | Member 1 task (from the proposal) | Status |
+|---|---|---|
+| 1 (Oct 12) | Make the repo, write `train.py` with mixed precision and resume, time 2 epochs per setting, start Standard seed 1 | Done |
+| 2 (Oct 19) | Standard seed 2, start AugMix + JSD seed 1, unit test for forbidden edits | Done |
+| 3 (Oct 26) | AugMix + JSD seed 2, AugMix without JSD, start CutMix | Done |
+| 4 (Nov 2) | Finish CutMix, record the cost of each run | Done (all models ready) |
+| 5 (Nov 9) | Help with the difficult-stream runs | Next |
+| 6 (Nov 16) | Bootstrap intervals and condition maps | To do |
+| 7 (Nov 23) | Together: figures and report draft | To do |
+| 8 (Nov 30) | Together: code clean-up, README, final report, slides | To do |
+
 ---
 
 ## 3. The 4 training methods (in simple words)
@@ -121,10 +136,13 @@ AugMix is slow because the edits are done on the CPU, not the GPU. Kaggle gives 
 
 ## 8. What is left
 
-All 6 Stage 1 models are trained.
+All 6 Stage 1 models are trained and re-checked on the laptop. Each one gives the same accuracy as in training.
 
-1. Put all 6 trained models (`final.pt`) in the shared Drive folder `cmpe252/runs/` for Yash.
-2. Weeks 5–6: help Yash with the hard test conditions, confidence intervals (bootstrap) and condition maps.
+1. Share the Drive folder `cmpe252/runs/` (all 6 `final.pt` files) with Yash.
+2. Merge the Stage 1 pull request into `main` after talking with Yash about the merge order.
+3. Week 5: help Yash run the continual (changing pictures) stream on all models.
+4. Week 6: write a script that reads Yash's saved predictions and makes the 95% bootstrap intervals and the condition maps.
+5. Weeks 7–8: figures, report, code clean-up and slides together.
 
 ---
 
