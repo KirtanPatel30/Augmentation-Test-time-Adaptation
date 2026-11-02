@@ -49,10 +49,47 @@ def load_cifar10c(corruption, severity, data_dir="data/CIFAR-10-C", n_examples=N
     return np.asarray(x), y.astype(np.int64)
 
 
+CIFAR10_HF_REPO = "uoft-cs/cifar10"  # official CIFAR-10 on Hugging Face, same test order
+CIFAR10_HF_TEST = "plain_text/test-00000-of-00001.parquet"
+
+
+def _cifar10_test_from_hf(cache_path):
+    """Download the 24 MB test split from Hugging Face and cache it as .npz."""
+    import io
+
+    import pandas as pd
+    from huggingface_hub import hf_hub_download
+    from PIL import Image
+
+    parquet = hf_hub_download(CIFAR10_HF_REPO, CIFAR10_HF_TEST, repo_type="dataset")
+    df = pd.read_parquet(parquet)
+    x = np.stack([np.asarray(Image.open(io.BytesIO(img["bytes"])).convert("RGB")) for img in df["img"]])
+    y = df["label"].to_numpy(dtype=np.int64)
+    np.savez(cache_path, x=x, y=y)
+    return x, y
+
+
 def load_cifar10_clean(data_dir="data", n_examples=N_PER_SEVERITY):
-    """Clean CIFAR-10 test set, same format as load_cifar10c."""
+    """Clean CIFAR-10 test set, same format as load_cifar10c.
+
+    Uses a local torchvision copy if there is one. Otherwise it gets the test split
+    from Hugging Face, because the official Toronto server is often very slow
+    (about 60 kB/s on Colab), and falls back to torchvision's download.
+    """
     from torchvision.datasets import CIFAR10
 
+    if os.path.isdir(os.path.join(data_dir, "cifar-10-batches-py")):
+        ds = CIFAR10(root=data_dir, train=False, download=False)
+        return ds.data[:n_examples], np.asarray(ds.targets[:n_examples], dtype=np.int64)
+    cache = os.path.join(data_dir, "cifar10_test.npz")
+    if os.path.exists(cache):
+        z = np.load(cache)
+        return z["x"][:n_examples], z["y"][:n_examples]
+    try:
+        x, y = _cifar10_test_from_hf(cache)
+        return x[:n_examples], y[:n_examples]
+    except Exception as e:  # no internet to HF, missing pandas, ...
+        print(f"Hugging Face download of CIFAR-10 failed ({e}); using torchvision")
     ds = CIFAR10(root=data_dir, train=False, download=True)
     return ds.data[:n_examples], np.asarray(ds.targets[:n_examples], dtype=np.int64)
 
