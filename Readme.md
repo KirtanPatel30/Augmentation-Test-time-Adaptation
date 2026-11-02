@@ -35,7 +35,7 @@ Both are free and public.
 
 ## Stage 2: test-time adaptation and evaluation (Member 2)
 
-Progress, results so far and next steps: [docs/PROGRESS_REPORT.md](docs/PROGRESS_REPORT.md).
+Progress, results so far and next steps: [docs/stage2_report.md](docs/stage2_report.md).
 
 ```
 tta/data.py      CIFAR-10 / CIFAR-10-C loading (images in [0, 1])
