@@ -2,7 +2,7 @@
 
 **Project:** Does Augmentation Make Test-Time Adaptation Safer? (CMPE 252, Fall 2026)
 **Branch:** `member2/stage2-adaptation-eval` (pull request #3 into `main`)
-**Last updated:** November 2, 2026 (start of week 4 of 8)
+**Last updated:** November 2, 2026 (week 4 of 8)
 
 ---
 
@@ -16,9 +16,9 @@
 | Merge with Kirtan's Stage 1 code, checkpoint handoff | ✅ Done. Our loader gives exactly Kirtan's clean accuracy (95.08%, 94.97%) |
 | **E1:** reproduce the published RobustBench + Tent numbers | ✅ Done, all 6 numbers within 0.05 points |
 | Tent learning rate chosen on the 4 extra corruptions | ✅ Done, 1e-3 (the official value) |
-| **E2 + E3:** none / BN-adapt / Tent, 75 conditions + clean | ✅ Standard seeds 1–2. ⏳ 4 more models (waiting for Kirtan's `final.pt` files) |
-| **E4:** continual and small-batch streams (RQ4) | ✅ Standard seeds 1–2. ⏳ 4 more models |
-| **E5:** help/harm maps and calibration (RQ5) | ✅ Maps for every Standard run; ⏳ comparison across augmentations |
+| **E2 + E3:** none / BN-adapt / Tent, 75 conditions + clean | ✅ All 6 models |
+| **E4:** continual and small-batch streams (RQ4) | ✅ All 6 models, Tent continual 3 times each |
+| **E5:** help/harm maps and calibration (RQ5) | ✅ Maps for every run, comparison across augmentations (section 5.5) |
 | **E6:** optional extensions | Periodic reset (`--reset-every`) implemented, not run yet |
 
 ---
@@ -57,6 +57,8 @@
 7. Started the full Stage 2 run in Colab. The free runtime disconnected after 34 minutes because nobody was using the page, and the run was lost. Moved the full runs to **Kaggle**, which runs a notebook in the background ("Save & Run All") with no browser open.
 8. Kaggle Version 1 finished, but its output was empty (section 4, change 9). Fixed and reran as Version 2, which finished in about 1 h 20 min on a T4 (22 runs).
 9. Downloaded the Version 2 results, re-ran `analyze.py` on the Mac (its tables match Kaggle's exactly) and saved them in `results/kaggle_standard/`.
+10. Kirtan uploaded the other 4 models. We added them to the Kaggle dataset and changed the notebook so models that are already done get only the 2 extra Tent continual runs (`REPEATS_ONLY`). Version 3 ran 52 runs in about 5 h 15 min with no failures.
+11. Combined both Kaggle runs (72 runs, 6 models) in `results/all_models/` and analyzed them together on the Mac (tables match Kaggle's exactly).
 
 ---
 
@@ -73,6 +75,7 @@
 | 7 | Checkpoints named `standard_s1.pt` etc. | Stage 1 saves every model as `runs/<method>_seed<N>/final.pt`, so all runs had the same name. | `model_tag` uses the folder name. New test for it. |
 | 8 | Clean CIFAR-10 through torchvision. | The Toronto server ran at about 60 kB/s on Colab. | Clean test set from Hugging Face `uoft-cs/cifar10`. All 10,000 labels checked against CIFAR-10-C. |
 | 9 | Colab for the full run; results linked into the repo's `results/` folder. | Colab disconnects idle sessions. On Kaggle, `ln -sfn /kaggle/working/results results` made the link *inside* the existing `results/` folder, so Version 1 saved nothing (166 B output). | Kaggle notebook passes `OUT=/kaggle/working/results` to `run_stage2.sh`; Colab notebook moves the repo folder aside first. |
+| 10 | One Tent continual run per model. | The same run gave different numbers on two Kaggle runs (up to 1 point), and the two Standard seeds differed by 5 points. | 3 Tent continual runs per model (`REPEATS`, runs named `..._rep2`, `..._rep3`). |
 
 ---
 
@@ -144,11 +147,54 @@ All numbers are errors in %. "Corr." is the mean over all 75 conditions (episodi
 
 Files: `results/kaggle_standard/tables/runs.csv`, `tables/conditions.csv`, `summary.csv`, `run_stage2.log`, help/harm maps `figures/map_*.png` and stream plots `figures/stream_*.png`. Per-image predictions (`preds/`, 125 MB) are kept locally, out of git.
 
+### 5.5 All 6 models (E2–E5)
+
+Our ResNet-18, one row per Stage 1 model. Errors in %. Tent continual is the mean of 3 runs (range in brackets).
+
+**Severity-5 error**
+
+| Model | None | BN episodic | Tent episodic | BN small batch | Tent small batch | BN continual | Tent continual (3 runs) |
+|---|---|---|---|---|---|---|---|
+| Standard s1 | 43.64 | 22.01 | 18.39 | 24.80 | 23.06 | 22.01 | 19.33 (18.4–20.4) |
+| Standard s2 | 43.84 | 22.14 | 18.84 | 24.74 | 23.16 | 22.14 | **25.97 (23.4–28.7)** |
+| CutMix s1 | 46.07 | 22.21 | 17.48 | 24.95 | 22.61 | 22.21 | **24.18 (21.3–25.7)** |
+| AugMix no JSD s1 | 21.89 | 16.27 | 13.66 | 18.81 | 17.20 | 16.27 | 16.11 (15.2–18.0) |
+| AugMix s1 | 17.39 | 13.89 | 11.74 | 16.10 | 14.80 | 13.89 | 13.45 (13.0–14.1) |
+| AugMix s2 | 17.89 | 13.60 | 11.62 | 15.90 | 14.54 | 13.60 | 12.85 (12.5–13.4) |
+
+**Episodic, all 76 conditions (clean + 75)**
+
+| Model | Clean: none / BN / Tent | Corr. error: none / BN / Tent | ECE: none / BN / Tent | Harm rate: BN / Tent |
+|---|---|---|---|---|
+| Standard s1 | 4.92 / 6.69 / 5.93 | 25.90 / 15.82 / 13.27 | 17.9 / 8.9 / 8.5 | 0.26 / 0.11 |
+| Standard s2 | 5.03 / 6.86 / 5.69 | 25.87 / 15.88 / 13.60 | 17.2 / 9.1 / 9.0 | 0.24 / 0.08 |
+| CutMix s1 | 3.82 / 5.04 / 4.70 | 28.50 / 15.33 / 12.22 | 14.9 / 3.5 / 6.5 | **0.20 / 0.07** |
+| AugMix no JSD s1 | 4.69 / 6.41 / 5.45 | 13.19 / 11.95 / 10.19 | 6.2 / 5.6 / 5.7 | 0.50 / 0.25 |
+| AugMix s1 | 4.79 / 6.33 / 5.42 | 10.84 / 10.52 / 9.05 | 5.1 / 3.5 / 4.4 | **0.63 / 0.28** |
+| AugMix s2 | 4.72 / 6.12 / 5.32 | 11.17 / 10.37 / 8.97 | 5.0 / 3.3 / 4.2 | 0.54 / 0.22 |
+
+**Severity-5 streams: harm rate (of 15) and collapse (max)**
+
+| Model | BN small batch | Tent small batch | Tent continual harm (mean of 3) | Tent continual collapse (3 runs) |
+|---|---|---|---|---|
+| Standard s1 | 0.20 | 0.20 | 0.07 | 0.17 / 0.23 / 0.20 |
+| Standard s2 | 0.20 | 0.20 | 0.20 | 0.28 / 0.35 / **0.40** |
+| CutMix s1 | 0.07 | 0.07 | 0.20 | 0.33 / **0.40** / 0.28 |
+| AugMix no JSD s1 | 0.47 | 0.33 | 0.36 | 0.20 / 0.32 / 0.20 |
+| AugMix s1 | 0.47 | 0.40 | 0.36 | 0.20 / 0.20 / 0.23 |
+| AugMix s2 | 0.47 | 0.40 | 0.33 | 0.18 / 0.18 / 0.17 |
+
+ECE of Tent continual (mean of 3): Standard 15.8 / 22.7, CutMix 20.9, AugMix no JSD 13.0, AugMix 10.5 / 9.8. Shuffle orders change Tent's severity-5 error by at most 0.25 points for every model.
+
+**Where BN-adapt harms AugMix (episodic, both seeds):** clean and the low severities of almost every corruption (brightness, fog, snow, defocus, motion and zoom blur 1–4, contrast and pixelate 1–3), plus JPEG and elastic at all 5 severities. Largest +2.42 points. Tent harms the same kind of conditions but fewer of them (largest +1.15).
+
+Files: `results/all_models/` (`tables/runs.csv`, `tables/conditions.csv`, `summary.csv`, `figures/`, `logs/`). Per-image predictions (`preds/`, about 400 MB) are kept locally, out of git.
+
 ---
 
-## 6. What the results tell us so far
+## 6. What the results tell us
 
-Only the Standard models are done, so these are answers for the baseline. The augmentation comparison needs the other 4 models.
+Points 1–6 come from the Standard models; point 7 compares all 6 models.
 
 1. **H3 (most of the gain is BN-adapt; Tent adds about 2 points): supported on our ResNet-18.** At severity 5, BN-adapt takes error from 43.7 to 22.1 (−21.6); Tent adds −3.5 (18.6). The same pattern as the public WRN-28-10 in E1.
 2. **Adaptation is not free, even episodically.** BN-adapt is worse than no adaptation on about a quarter of all conditions, including clean data (+1.8 points), and Tent on about a tenth. The harm sits on clean data, mild severities and the easy corruptions (brightness, JPEG, fog), where the model was already good. This matches the AugMix WRN result in E1: adaptation hurts where the source model is already right.
@@ -158,7 +204,13 @@ Only the Standard models are done, so these are answers for the baseline. The au
    - **BN-adapt has no state**, so its continual and episodic severity-5 errors are identical (22.01 / 22.14), a useful sanity check.
 4. **Calibration (RQ5):** adaptation halves ECE episodically (17.6 → 8.7–9.0), with Tent slightly better than BN-adapt here. In the hard streams Tent loses that edge: continual Tent seed 2 has ECE 20.1, worse than no adaptation's ECE over all conditions.
 5. **Order inside a condition does not matter much:** 3 shuffle orders change Tent's severity-5 error by at most 0.25 points, and none is harmful.
-6. **For the next runs:** continual Tent needs repeated runs (at least 3 per model), because a single run moves by up to 1 point between GPU runs and by 5 points between seeds.
+6. **For the next runs:** continual Tent needs repeated runs (at least 3 per model), because a single run moves by up to 1 point between GPU runs and by 5 points between seeds. (Done for all 6 models: the 3 runs differ by up to 5 points.)
+7. **All 6 models: does augmentation make adaptation safer (H4)? It depends on what "safer" means.**
+   - **Lowest error and most stable: AugMix (with JSD).** It has the lowest error in every protocol, and continual Tent works on it: all 3 runs are better than BN-adapt (12.5–14.1 vs 13.6–13.9), with low collapse (≤ 0.23) and the lowest ECE. Without the JSD loss AugMix is worse (16.1) and one of the 3 runs collapses more (0.32) and is 2.8 points worse.
+   - **Most often harmed: also AugMix.** BN-adapt is worse than no adaptation on 50–63% of AugMix conditions, against 20–26% for Standard and CutMix, and Tent on 22–28% against 7–11%. The harm-rate tables say the opposite of H4: the better the model is without adaptation, the more often adaptation hurts it (clean and mild corruptions, where the source BN statistics are already right). The harm is small, at most +2.4 points.
+   - **CutMix does not protect the hard streams.** It has the best clean error (3.82) but the worst corruption error without adaptation (46.1 at severity 5). It gains the most from adaptation and is rarely harmed in episodic tests, but continual Tent is as unstable as for Standard seed 2: worse than BN-adapt in 2 of 3 runs, collapse up to 0.40, ECE 20.9.
+   - **Small batches hurt every model** by 2–3 points for BN-adapt and 2–4 for Tent, and harm 47% of the severity-5 conditions for AugMix.
+   - **Summary for H4:** augmentation that covers the corruptions (AugMix + JSD) makes adaptation *stable* (no collapse, no long-stream failure), but not *harmless*: adaptation hurts AugMix more often, in small amounts, because there is less to gain. Mixing images (CutMix) gives neither.
 
 ---
 
@@ -169,9 +221,9 @@ Only the Standard models are done, so these are answers for the baseline. The au
 | 1 (Oct 12) | CIFAR-10-C, `eval.py`, reproduce Standard WRN-28-10 | ✅ Done |
 | 2 (Oct 19) | Reproduce AugMix WRN-40-2, continual and small-batch streams | ✅ Done |
 | 3 (Oct 26) | Tent learning rate, episodic tests on finished models | ✅ Done (Standard seeds 1–2) |
-| 4 (Nov 2) | Episodic tests on all models, ECE from saved predictions | ✅ Standard done; ⏳ 4 models waiting for checkpoints |
-| 5 (Nov 9) | Continual stream on all models | ✅ Standard done; ⏳ 4 models |
-| 6 (Nov 16) | Small-batch stream, harm rate, collapse; optional E6 | ✅ Standard done; ⏳ 4 models, E6 |
+| 4 (Nov 2) | Episodic tests on all models, ECE from saved predictions | ✅ Done (all 6 models) |
+| 5 (Nov 9) | Continual stream on all models | ✅ Done (3 runs per model) |
+| 6 (Nov 16) | Small-batch stream, harm rate, collapse; optional E6 | ✅ Done; ⏳ optional E6 not run |
 | 7 to 8 | Together: figures, report, slides, code clean-up | Not started |
 
 ---
@@ -179,16 +231,13 @@ Only the Standard models are done, so these are answers for the baseline. The au
 ## 8. What is next
 
 ### Yash (Stage 2)
-1. **When Kirtan uploads the 4 remaining models** (`augmix_seed1`, `augmix_seed2`, `augmix_nojsd_seed1`, `cutmix_seed1`, each `runs/<name>/final.pt`): add them to the Kaggle dataset `cmpe252-stage1-models` as a new version, and run the Kaggle notebook only on those 4 (about 2 h 40 min on a T4, within the 30 h/week quota).
-2. **Repeat Tent continual** 3 times per model (finding 6).
-3. **E5:** put the help/harm maps of all 6 models side by side, and compare harm rate, ECE and collapse across augmentations. This answers H4: does augmentation make adaptation safer?
-4. **Optional E6:** periodic reset (`--reset-every`) on continual Tent, which should fix the seed-2 drift.
-5. Get pull request #3 reviewed and merged by Kirtan.
+1. **Optional E6:** periodic reset (`--reset-every`) on continual Tent for Standard s2 and CutMix, the two models where it drifts. About 15 minutes per run on Kaggle.
+2. **Figures for the final report:** one figure with the 6 help/harm maps side by side, and one with the continual-stream plots of the 3 Tent runs per model.
+3. Get pull request #3 reviewed and merged by Kirtan.
 
-### Kirtan (Stage 1): what Stage 2 needs
-- The 4 remaining `final.pt` files. `augmix_seed1` has only `last.pt` on Drive so far.
-- Same format as the Standard ones, which work: `{"model": state_dict, ...}` from `model.py`, no normalization in the data loader.
-- No CIFAR-10-C needed for training.
+### Together (weeks 7–8)
+- Final report: Stage 1 training cost (Kirtan's logs, E2) next to the Stage 2 tables of section 5.5.
+- Slides and code clean-up.
 
 ---
 
@@ -207,4 +256,4 @@ OUT=results bash scripts/run_stage2.sh runs/*/final.pt
 python analyze.py --results results/kaggle_standard
 ```
 
-E1 and learning-rate tables: `results/e1_colab/`. Standard ResNet-18 results: `results/kaggle_standard/`. Per-image predictions are kept out of git and can be regenerated with the commands above.
+E1 and learning-rate tables: `results/e1_colab/`. Standard ResNet-18 results (first Kaggle run): `results/kaggle_standard/`. All 6 models: `results/all_models/`. Per-image predictions are kept out of git and can be regenerated with the commands above.
