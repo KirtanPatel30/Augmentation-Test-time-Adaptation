@@ -29,20 +29,31 @@ OUT = '/kaggle/working/results'
 !mkdir -p /tmp/data $OUT && ln -sfn /tmp/data data"""),
     ("code", """!CIFAR10C_HF_REPO=$HF_REPO bash scripts/download_cifar10c.sh data
 !python -m pytest -q tests"""),
-    ("code", """import glob
+    ("code", """import glob, os
+# Models whose full set of runs is already done: they only get the extra Tent continual runs.
+DONE = ['standard_seed1', 'standard_seed2']
 CKPTS = sorted(glob.glob('/kaggle/input/**/final.pt', recursive=True))
-print(len(CKPTS), 'models:', *CKPTS, sep='\\n  ')
+NEW = [c for c in CKPTS if os.path.basename(os.path.dirname(c)) not in DONE]
+OLD = [c for c in CKPTS if c not in NEW]
+print('full runs:', *NEW, sep='\\n  ')
+print('extra Tent continual runs only:', *OLD, sep='\\n  ')
 assert CKPTS, 'No final.pt found: add the Stage 1 models dataset with Add Input'"""),
-    ("code", """# All runs (about 40 minutes per model on a T4). The log is also saved to the output.
-import os, subprocess
-with open(f'{OUT}/run_stage2.log', 'w') as log:
-    p = subprocess.Popen(['bash', 'scripts/run_stage2.sh', *CKPTS], stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT, text=True, env={**os.environ, 'OUT': OUT})
-    for line in p.stdout:
-        log.write(line); log.flush()
-        if 'Warning' not in line and 'pkg_resources' not in line:
-            print(line, end='')
-print('exit code', p.wait())"""),
+    ("code", """# About 45 minutes per new model on a T4, 5 minutes per done model. The log is also saved to the output.
+import subprocess
+def run_stage2(ckpts, **env):
+    if not ckpts:
+        return
+    with open(f'{OUT}/run_stage2.log', 'a') as log:
+        p = subprocess.Popen(['bash', 'scripts/run_stage2.sh', *ckpts], stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT, text=True, env={**os.environ, 'OUT': OUT, **env})
+        for line in p.stdout:
+            log.write(line); log.flush()
+            if 'Warning' not in line and 'pkg_resources' not in line:
+                print(line, end='')
+    print('exit code', p.wait())
+
+run_stage2(NEW)
+run_stage2(OLD, REPEATS_ONLY='1')"""),
     ("code", """import pandas as pd
 pd.set_option('display.width', 200)
 pd.read_csv(f'{OUT}/tables/runs.csv')"""),
