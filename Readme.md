@@ -4,7 +4,7 @@ CMPE 252: Artificial Intelligence, San José State University, Fall 2026
 
 **Team:** Kirtan Patel and Yash Patel
 
-> 🚧 Work in progress. Code and results coming soon.
+> Status: all 6 models are trained and tested. The final report and slides are in progress.
 
 ## What is this project?
 
@@ -42,6 +42,7 @@ train.py        Train one model: standard, cutmix, augmix, or augmix_nojsd
 time_epochs.py  Time 2 epochs of each method -> results/epoch_timing.csv
 test_ops.py     Checks AugMix never uses brightness/contrast/color/sharpness
 colab_train.ipynb  Train one model on Colab (set METHOD and SEED)
+kaggle_train.ipynb Train one model on Kaggle (set METHOD and SEED)
 results/        Small result files (timing, summaries)
 ```
 
@@ -82,7 +83,7 @@ Full Stage 1 progress report: [docs/progress_report.md](docs/progress_report.md)
 
 ## Stage 2: test-time adaptation and evaluation (Member 2)
 
-Progress, results so far and next steps: [docs/stage2_report.md](docs/stage2_report.md).
+Progress, results and next steps: [docs/stage2_report.md](docs/stage2_report.md).
 
 ```
 tta/data.py      CIFAR-10 / CIFAR-10-C loading (images in [0, 1])
