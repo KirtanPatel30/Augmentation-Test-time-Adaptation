@@ -80,6 +80,40 @@ See [docs/member1_training.md](docs/member1_training.md) for Colab / Kaggle step
 
 Full Stage 1 progress report: [docs/progress_report.md](docs/progress_report.md).
 
+## Stage 2: test-time adaptation and evaluation (Member 2)
+
+Progress, results so far and next steps: [docs/stage2_report.md](docs/stage2_report.md).
+
+```
+tta/data.py      CIFAR-10 / CIFAR-10-C loading (images in [0, 1])
+tta/models.py    CIFAR ResNet-18 (normalizes inside), checkpoint loader, RobustBench models
+tta/methods.py   none / BN-adapt / Tent (Tent adapted from DequanWang/tent, MIT)
+tta/streams.py   episodic, continual, small-batch protocols
+tta/metrics.py   error, ECE, paired bootstrap (harm rate), collapse score
+eval.py          one model x one method x one protocol; saves all predictions
+analyze.py       all metrics, condition maps, and stream plots from saved predictions (CPU)
+notebooks/stage2_colab.ipynb   full runs on a free Colab T4
+```
+
+Quick checks on a laptop (no download needed):
+
+```bash
+python -m pytest -q tests
+python scripts/smoke_test.py
+```
+
+Full runs on a GPU:
+
+```bash
+CIFAR10C_HF_REPO=YashP54/cifar10-c bash scripts/download_cifar10c.sh   # HF mirror, Zenodo fallback
+python eval.py --model rb_standard_wrn28 --method tent --severities 5   # E1 check
+python eval.py --model runs/standard_seed1/final.pt --method tent --protocol continual
+python analyze.py
+```
+
+Stage 1 checkpoints (`runs/<method>_seed<N>/final.pt` from `train.py`) load directly:
+`model.py` and `tta/models.py` use the same layer names and both normalize inside the model.
+
 ## Code we build on
 
 - [AugMix](https://github.com/google-research/augmix)

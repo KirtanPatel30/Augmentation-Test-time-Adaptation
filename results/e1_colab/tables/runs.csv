@@ -1,0 +1,7 @@
+run,model,method,protocol,batch_size,lr,shuffle_seed,n_conditions,clean_error,corruption_error,sev5_error,ece,harm_rate,help_rate,collapse_max,collapse_mean,seconds
+rb_augmix_wrn40_bn_episodic_bs200,rb_augmix_wrn40,bn,episodic,200,,,15,,14.491,14.491,4.873,0.2,0.6,0.144,0.115,100.739
+rb_augmix_wrn40_none_episodic_bs200,rb_augmix_wrn40,none,episodic,200,,,15,,18.266,18.266,10.176,,,0.334,0.16,97.63
+rb_augmix_wrn40_tent_episodic_bs200_lr0.001,rb_augmix_wrn40,tent,episodic,200,0.001,,15,,12.079,12.079,5.406,0.0,0.933,0.148,0.116,187.331
+rb_standard_wrn28_bn_episodic_bs200,rb_standard_wrn28,bn,episodic,200,,,15,,20.437,20.437,13.769,0.0,1.0,0.143,0.115,317.823
+rb_standard_wrn28_none_episodic_bs200,rb_standard_wrn28,none,episodic,200,,,15,,43.515,43.515,33.996,,,0.579,0.278,280.965
+rb_standard_wrn28_tent_episodic_bs200_lr0.001,rb_standard_wrn28,tent,episodic,200,0.001,,15,,18.585,18.585,13.338,0.0,1.0,0.153,0.119,662.49

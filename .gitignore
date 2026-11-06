@@ -1,15 +1,23 @@
 __pycache__/
 *.pyc
+.venv/
+.DS_Store
 .ipynb_checkpoints/
 
-# Data sets (download with torchvision / Zenodo)
+# Data sets (download with torchvision / Hugging Face / Zenodo)
 data/
+*.tar
+*.npy
 
-# Checkpoints and run folders (too large for git; keep them on Drive/Kaggle)
+# Model weights and run folders (too large for git; keep them on Drive/Kaggle)
 runs/
+models/
+checkpoints/
 *.pt
 *.pth
 *.tmp
 
-# Small result files ARE tracked
+# Raw Stage 2 predictions and smoke-test output; small result files ARE tracked
+preds/
+smoke/
 !results/
