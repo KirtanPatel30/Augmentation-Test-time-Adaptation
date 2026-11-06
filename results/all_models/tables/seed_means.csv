@@ -1,0 +1,13 @@
+training,adaptation,seeds,clean_error,corruption_error,sev5_error,ece,harm_rate,help_rate
+standard,none,2,4.975,25.884,43.739,17.561,,
+standard,bn,2,6.775,15.849,22.076,9.008,0.24,0.66
+standard,tent,2,5.81,13.434,18.612,8.736,0.08,0.82
+cutmix,none,1,3.82,28.498,46.07,14.864,,
+cutmix,bn,1,5.04,15.329,22.214,3.455,0.187,0.707
+cutmix,tent,1,4.7,12.22,17.485,6.513,0.053,0.853
+augmix_nojsd,none,1,4.69,13.188,21.891,6.172,,
+augmix_nojsd,bn,1,6.41,11.945,16.273,5.571,0.493,0.32
+augmix_nojsd,tent,1,5.45,10.188,13.657,5.749,0.24,0.547
+augmix,none,2,4.755,11.005,17.636,5.043,,
+augmix,bn,2,6.225,10.445,13.746,3.407,0.58,0.274
+augmix,tent,2,5.37,9.011,11.678,4.339,0.24,0.5

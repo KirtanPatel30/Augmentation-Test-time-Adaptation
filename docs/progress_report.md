@@ -4,7 +4,7 @@
 **Course:** CMPE 252, San José State University, Fall 2026
 **Member 1:** Kirtan Patel (training the models)
 **Member 2:** Yash Patel (testing the models with BN-adapt and Tent on CIFAR-10-C)
-**Date:** November 2, 2026
+**Date:** November 5, 2026
 
 ---
 
@@ -17,7 +17,7 @@ The work has two stages:
 - **Stage 1 (me):** train the same image model in 4 different ways and save the trained models.
 - **Stage 2 (Yash):** take those saved models and test them on damaged pictures (CIFAR-10-C), with and without test-time adjusting.
 
-This report covers Stage 1.
+This report covers Stage 1. Stage 2 is in [stage2_report.md](stage2_report.md).
 
 ---
 
@@ -34,7 +34,22 @@ This report covers Stage 1.
 | Train AugMix without JSD, 1 seed | Done |
 | Train CutMix, 1 seed | Done |
 | Record how much compute each run cost | Done |
-| Weeks 5–6: help with hard test conditions, confidence intervals and condition maps | Later |
+| Weeks 5–6: help with hard test conditions, confidence intervals and condition maps | Done in Stage 2 (Yash's runs and `analyze.py`) |
+
+### Where we are in the 8-week plan
+
+Stage 1 is **on time**. The plan says all models should be ready at the end of week 4, and they are.
+
+| Week | Member 1 task (from the proposal) | Status |
+|---|---|---|
+| 1 (Oct 12) | Make the repo, write `train.py` with mixed precision and resume, time 2 epochs per setting, start Standard seed 1 | Done |
+| 2 (Oct 19) | Standard seed 2, start AugMix + JSD seed 1, unit test for forbidden edits | Done |
+| 3 (Oct 26) | AugMix + JSD seed 2, AugMix without JSD, start CutMix | Done |
+| 4 (Nov 2) | Finish CutMix, record the cost of each run | Done (all models ready) |
+| 5 (Nov 9) | Help with the difficult-stream runs | Done early (Yash ran them on all 6 models) |
+| 6 (Nov 16) | Bootstrap intervals and condition maps | Done early (`analyze.py`) |
+| 7 (Nov 23) | Together: figures and report draft | Next |
+| 8 (Nov 30) | Together: code clean-up, README, final report, slides | To do |
 
 ---
 
@@ -121,10 +136,12 @@ AugMix is slow because the edits are done on the CPU, not the GPU. Kaggle gives 
 
 ## 8. What is left
 
-All 6 Stage 1 models are trained.
+All 6 Stage 1 models are trained and re-checked on the laptop. Each one gives the same accuracy as in training.
 
-1. Put all 6 trained models (`final.pt`) in the shared Drive folder `cmpe252/runs/` for Yash.
-2. Weeks 5–6: help Yash with the hard test conditions, confidence intervals (bootstrap) and condition maps.
+Yash has all 6 `final.pt` files and has tested every model. Stage 1 and Stage 2 are both merged into `main`.
+
+1. Weeks 7–8: write the Stage 1 part of the final report (methods, training settings, cost and problems).
+2. Weeks 7–8: figures, final report, code clean-up and slides together.
 
 ---
 
