@@ -76,6 +76,7 @@
 | 8 | Clean CIFAR-10 through torchvision. | The Toronto server ran at about 60 kB/s on Colab. | Clean test set from Hugging Face `uoft-cs/cifar10`. All 10,000 labels checked against CIFAR-10-C. |
 | 9 | Colab for the full run; results linked into the repo's `results/` folder. | Colab disconnects idle sessions. On Kaggle, `ln -sfn /kaggle/working/results results` made the link *inside* the existing `results/` folder, so Version 1 saved nothing (166 B output). | Kaggle notebook passes `OUT=/kaggle/working/results` to `run_stage2.sh`; Colab notebook moves the repo folder aside first. |
 | 10 | One Tent continual run per model. | The same run gave different numbers on two Kaggle runs (up to 1 point), and the two Standard seeds differed by 5 points. | 3 Tent continual runs per model (`REPEATS`, runs named `..._rep2`, `..._rep3`). |
+| 11 | Harm and help rates over every episodic condition, clean included (76). | The proposal defines the harm rate over the 75 CIFAR-10-C conditions; counting clean mixed two questions. Found in the pull request review. | `analyze.py` counts only corrupted conditions and reports clean separately (`clean_effect` in `runs.csv`). Episodic harm rates went down by about 0.01; no conclusion changed. |
 
 ---
 
@@ -119,20 +120,20 @@ BN-adapt harms AugMix on JPEG (+2.79), elastic (+1.60) and glass blur (+1.26).
 
 ### 5.4 E2 + E3 + E4 on our ResNet-18, Standard training (seeds 1 and 2)
 
-All numbers are errors in %. "Corr." is the mean over all 75 conditions (episodic only). Harm rate: share of conditions where the method is worse than no adaptation across the whole 95% paired bootstrap interval (76 conditions with clean for episodic, 15 for the severity-5 streams). Collapse: largest share of one class in any window of 1,000 predictions (0.1 is balanced). Seed 1 / seed 2.
+All numbers are errors in %. "Corr." is the mean over all 75 conditions (episodic only). Harm rate: share of conditions where the method is worse than no adaptation across the whole 95% paired bootstrap interval (the 75 corrupted conditions for episodic, 15 for the severity-5 streams; clean is reported on its own). Collapse: largest share of one class in any window of 1,000 predictions (0.1 is balanced). Seed 1 / seed 2.
 
 | Protocol | Method | Clean | Corr. | Sev. 5 | ECE | Harm rate | Collapse |
 |---|---|---|---|---|---|---|---|
 | Episodic, batch 200 | None | 4.92 / 5.03 | 25.90 / 25.87 | 43.64 / 43.84 | 17.90 / 17.22 | | 0.851 / 0.856 |
-| | BN-adapt | 6.69 / 6.86 | 15.82 / 15.88 | 22.01 / 22.14 | 8.91 / 9.11 | 0.26 / 0.24 | 0.145 / 0.145 |
-| | Tent | 5.93 / 5.69 | 13.27 / 13.60 | 18.39 / 18.84 | 8.51 / 8.96 | 0.11 / 0.08 | 0.173 / 0.176 |
+| | BN-adapt | 6.69 / 6.86 | 15.82 / 15.88 | 22.01 / 22.14 | 8.91 / 9.11 | 0.25 / 0.23 | 0.145 / 0.145 |
+| | Tent | 5.93 / 5.69 | 13.27 / 13.60 | 18.39 / 18.84 | 8.51 / 8.96 | 0.09 / 0.07 | 0.173 / 0.176 |
 | Continual, batch 200 | BN-adapt | | | 22.01 / 22.14 | 12.91 / 13.19 | 1/15 / 1/15 | 0.145 / 0.141 |
 | | Tent | | | **18.38 / 23.38** | 14.88 / **20.09** | 1/15 / **3/15** | 0.174 / **0.280** |
 | Small batch 16 | BN-adapt | | | 24.80 / 24.74 | 14.52 / 14.70 | 3/15 / 3/15 | 0.141 / 0.140 |
 | | Tent | | | 23.06 / 23.16 | 14.44 / 14.75 | 3/15 / 3/15 | 0.155 / 0.161 |
 | Episodic sev. 5, 3 shuffle orders | Tent | | | 18.08–18.31 / 18.72–18.98 | 11.9–12.1 / 12.6–12.8 | 0 / 0 | ≤ 0.174 |
 
-(Episodic ECE is over 76 conditions, so it is lower than the severity-5-only ECE of the other rows.)
+(Episodic ECE is over all 75 conditions, so it is lower than the severity-5-only ECE of the other rows.)
 
 **Where adaptation harms (episodic, conditions harmed for both seeds):**
 - BN-adapt: clean, brightness 1–4, JPEG 1–4, fog 1–2, defocus 1–2, contrast 1, elastic 1, pixelate 1, snow 1. Largest: +2.86 points.
@@ -162,16 +163,16 @@ Our ResNet-18, one row per Stage 1 model. Errors in %. Tent continual is the mea
 | AugMix s1 | 17.39 | 13.89 | 11.74 | 16.10 | 14.80 | 13.89 | 13.45 (13.0–14.1) |
 | AugMix s2 | 17.89 | 13.60 | 11.62 | 15.90 | 14.54 | 13.60 | 12.85 (12.5–13.4) |
 
-**Episodic, all 76 conditions (clean + 75)**
+**Episodic: clean, and the 75 corrupted conditions** (BN-adapt and Tent are significantly worse than no adaptation on clean data for every model)
 
 | Model | Clean: none / BN / Tent | Corr. error: none / BN / Tent | ECE: none / BN / Tent | Harm rate: BN / Tent |
 |---|---|---|---|---|
-| Standard s1 | 4.92 / 6.69 / 5.93 | 25.90 / 15.82 / 13.27 | 17.9 / 8.9 / 8.5 | 0.26 / 0.11 |
-| Standard s2 | 5.03 / 6.86 / 5.69 | 25.87 / 15.88 / 13.60 | 17.2 / 9.1 / 9.0 | 0.24 / 0.08 |
-| CutMix s1 | 3.82 / 5.04 / 4.70 | 28.50 / 15.33 / 12.22 | 14.9 / 3.5 / 6.5 | **0.20 / 0.07** |
-| AugMix no JSD s1 | 4.69 / 6.41 / 5.45 | 13.19 / 11.95 / 10.19 | 6.2 / 5.6 / 5.7 | 0.50 / 0.25 |
-| AugMix s1 | 4.79 / 6.33 / 5.42 | 10.84 / 10.52 / 9.05 | 5.1 / 3.5 / 4.4 | **0.63 / 0.28** |
-| AugMix s2 | 4.72 / 6.12 / 5.32 | 11.17 / 10.37 / 8.97 | 5.0 / 3.3 / 4.2 | 0.54 / 0.22 |
+| Standard s1 | 4.92 / 6.69 / 5.93 | 25.90 / 15.82 / 13.27 | 17.9 / 8.9 / 8.5 | 0.25 / 0.09 |
+| Standard s2 | 5.03 / 6.86 / 5.69 | 25.87 / 15.88 / 13.60 | 17.2 / 9.1 / 9.0 | 0.23 / 0.07 |
+| CutMix s1 | 3.82 / 5.04 / 4.70 | 28.50 / 15.33 / 12.22 | 14.9 / 3.5 / 6.5 | **0.19 / 0.05** |
+| AugMix no JSD s1 | 4.69 / 6.41 / 5.45 | 13.19 / 11.95 / 10.19 | 6.2 / 5.6 / 5.7 | 0.49 / 0.24 |
+| AugMix s1 | 4.79 / 6.33 / 5.42 | 10.84 / 10.52 / 9.05 | 5.1 / 3.5 / 4.4 | **0.63 / 0.27** |
+| AugMix s2 | 4.72 / 6.12 / 5.32 | 11.17 / 10.37 / 8.97 | 5.0 / 3.3 / 4.2 | 0.53 / 0.21 |
 
 **Severity-5 streams: harm rate (of 15) and collapse (max)**
 
@@ -197,7 +198,7 @@ Files: `results/all_models/` (`tables/runs.csv`, `tables/conditions.csv`, `summa
 Points 1–6 come from the Standard models; point 7 compares all 6 models.
 
 1. **H3 (most of the gain is BN-adapt; Tent adds about 2 points): supported on our ResNet-18.** At severity 5, BN-adapt takes error from 43.7 to 22.1 (−21.6); Tent adds −3.5 (18.6). The same pattern as the public WRN-28-10 in E1.
-2. **Adaptation is not free, even episodically.** BN-adapt is worse than no adaptation on about a quarter of all conditions, including clean data (+1.8 points), and Tent on about a tenth. The harm sits on clean data, mild severities and the easy corruptions (brightness, JPEG, fog), where the model was already good. This matches the AugMix WRN result in E1: adaptation hurts where the source model is already right.
+2. **Adaptation is not free, even episodically.** BN-adapt is worse than no adaptation on about a quarter of the 75 corrupted conditions and on clean data (+1.8 points); Tent on less than a tenth, and on clean data too. The harm sits on clean data, mild severities and the easy corruptions (brightness, JPEG, fog), where the model was already good. This matches the AugMix WRN result in E1: adaptation hurts where the source model is already right.
 3. **RQ4, the difficult streams:**
    - **Small batch hurts both methods** at severity 5: BN-adapt 22.1 → 24.8 (+2.7), Tent 18.6 → 23.1 (+4.5). With batch 16, Tent keeps only 1.7 points of its 3.5-point lead over BN-adapt.
    - **Continual Tent is unstable.** For seed 1 it matches episodic Tent (18.4). For seed 2 it is worse than plain BN-adapt (23.4 vs 22.1), with the highest ECE (20.1) and the highest collapse score (0.28) of any adapted run. Same training recipe, different seed, very different result: the continual stream is where Tent can fail.
@@ -207,7 +208,7 @@ Points 1–6 come from the Standard models; point 7 compares all 6 models.
 6. **For the next runs:** continual Tent needs repeated runs (at least 3 per model), because a single run moves by up to 1 point between GPU runs and by 5 points between seeds. (Done for all 6 models: the 3 runs differ by up to 5 points.)
 7. **All 6 models: does augmentation make adaptation safer (H4)? It depends on what "safer" means.**
    - **Lowest error and most stable: AugMix (with JSD).** It has the lowest error in every protocol, and continual Tent works on it: all 3 runs are better than BN-adapt (12.5–14.1 vs 13.6–13.9), with low collapse (≤ 0.23) and the lowest ECE. Without the JSD loss AugMix is worse (16.1) and one of the 3 runs collapses more (0.32) and is 2.8 points worse.
-   - **Most often harmed: also AugMix.** BN-adapt is worse than no adaptation on 50–63% of AugMix conditions, against 20–26% for Standard and CutMix, and Tent on 22–28% against 7–11%. The harm-rate tables say the opposite of H4: the better the model is without adaptation, the more often adaptation hurts it (clean and mild corruptions, where the source BN statistics are already right). The harm is small, at most +2.4 points.
+   - **Most often harmed: also AugMix.** BN-adapt is worse than no adaptation on 49–63% of AugMix conditions, against 19–25% for Standard and CutMix, and Tent on 21–27% against 5–9%. The harm-rate tables say the opposite of H4: the better the model is without adaptation, the more often adaptation hurts it (clean and mild corruptions, where the source BN statistics are already right). The harm is small, at most +2.4 points.
    - **CutMix does not protect the hard streams.** It has the best clean error (3.82) but the worst corruption error without adaptation (46.1 at severity 5). It gains the most from adaptation and is rarely harmed in episodic tests, but continual Tent is as unstable as for Standard seed 2: worse than BN-adapt in 2 of 3 runs, collapse up to 0.40, ECE 20.9.
    - **Small batches hurt every model** by 2–3 points for BN-adapt and 2–4 for Tent, and harm 47% of the severity-5 conditions for AugMix.
    - **Summary for H4:** augmentation that covers the corruptions (AugMix + JSD) makes adaptation *stable* (no collapse, no long-stream failure), but not *harmless*: adaptation hurts AugMix more often, in small amounts, because there is less to gain. Mixing images (CutMix) gives neither.

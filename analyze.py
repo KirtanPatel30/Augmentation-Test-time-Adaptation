@@ -5,7 +5,8 @@
 
 Writes:
     results/tables/runs.csv             one row per run: clean / corruption / sev-5 error,
-                                        ECE, harm and help rate vs. no adaptation, collapse score
+                                        ECE, harm and help rate vs. no adaptation (corrupted conditions
+                                        only), clean_effect (+1 harm, -1 help, 0 none), collapse score
     results/tables/conditions.csv       one row per run x condition: error, ECE, effect (+1 harm,
                                         -1 help, 0 none) with its bootstrap interval
     results/figures/map_<run>.png       75-condition help/harm map (E5)
@@ -144,6 +145,8 @@ def main(argv=None):
         corr = [r for r in rows if r["corruption"] != "clean"]
         sev5 = [r for r in corr if r["severity"] == 5]
         clean = [r for r in rows if r["corruption"] == "clean"]
+        # Harm and help rates are over the CIFAR-10-C conditions only; clean is reported on its own.
+        corr_effects = [e for (c, _), e in effects.items() if c != "clean"]
         col = collapse_score(meta["stream_preds"])
         run_rows.append(dict(
             run=meta["run"], model=model_tag(meta["model"]), method=meta["method"],
@@ -153,8 +156,9 @@ def main(argv=None):
             corruption_error=np.mean([r["error"] for r in corr]) if corr else None,
             sev5_error=np.mean([r["error"] for r in sev5]) if sev5 else None,
             ece=np.mean([r["ece"] for r in corr]) if corr else None,
-            harm_rate=np.mean([e == 1 for e in effects.values()]) if effects else None,
-            help_rate=np.mean([e == -1 for e in effects.values()]) if effects else None,
+            harm_rate=np.mean([e == 1 for e in corr_effects]) if corr_effects else None,
+            help_rate=np.mean([e == -1 for e in corr_effects]) if corr_effects else None,
+            clean_effect=effects.get(("clean", 0)),
             collapse_max=float(col.max()), collapse_mean=float(col.mean()),
             seconds=meta["seconds"],
         ))
