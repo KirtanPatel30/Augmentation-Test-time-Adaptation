@@ -61,6 +61,27 @@ pd.read_csv(f'{OUT}/tables/runs.csv')"""),
 ]
 
 
+# python scripts/make_kaggle_notebook.py notebooks/e6_kaggle.ipynb e6
+if len(sys.argv) > 2 and sys.argv[2] == "e6":
+    cells[0] = ("md", """# E6 on Kaggle: Tent continual with a periodic reset
+
+Runs `scripts/run_e6.sh` on the two models where continual Tent drifts (Standard seed 2, CutMix seed 1):
+reset every 30, 100 or 320 batches, 3 runs each (about 50 minutes on a T4).
+
+Same setup as `stage2_kaggle.ipynb`: **GPU T4 x2**, **Internet On**, **Add Input** → the Stage 1 models dataset,
+then **Save Version → Save & Run All (Commit)**, and download `stage2_results.zip` from the **Output** tab.""")
+    cells[3] = ("code", """import glob, os
+MODELS = ['standard_seed2', 'cutmix_seed1']
+CKPTS = sorted(c for c in glob.glob('/kaggle/input/**/final.pt', recursive=True)
+               if os.path.basename(os.path.dirname(c)) in MODELS)
+print(len(CKPTS), 'models:', *CKPTS, sep='\\n  ')
+assert len(CKPTS) == len(MODELS), 'Missing a model: add the Stage 1 models dataset with Add Input'""")
+    cells[4] = ("code", cells[4][1].replace("scripts/run_stage2.sh", "scripts/run_e6.sh")
+                .replace("About 45 minutes per new model on a T4, 5 minutes per done model", "About 25 minutes per model on a T4")
+                .replace("run_stage2(NEW)\nrun_stage2(OLD, REPEATS_ONLY='1')", "run_stage2(CKPTS)"))
+    assert "run_e6.sh" in cells[4][1] and "run_stage2(CKPTS)" in cells[4][1]
+
+
 def to_cell(kind, src):
     lines = src.splitlines(keepends=True)
     if kind == "md":

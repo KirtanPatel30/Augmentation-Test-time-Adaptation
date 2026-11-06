@@ -191,13 +191,47 @@ ECE of Tent continual (mean of 3): Standard 15.8 / 22.7, CutMix 20.9, AugMix no 
 
 Files: `results/all_models/` (`tables/runs.csv`, `tables/conditions.csv`, `summary.csv`, `figures/`, `logs/`). Per-image predictions (`preds/`, about 400 MB) are kept locally, out of git.
 
+### 5.6 RQ3: how much Tent adds after BN-adapt, per model
+
+Episodic protocol, batch 200. "BN gain" = error(none) − error(BN-adapt); "Tent extra" = error(BN-adapt) − error(Tent); both in points. "BN share" = BN gain / total gain. Tent vs. BN-adapt counts the conditions where the 95% paired bootstrap interval of the difference is entirely on one side. Made by `scripts/rq3_table.py` → `results/all_models/tables/rq3.csv`.
+
+| Model | None (75) | BN gain | Tent extra | BN share | None (sev. 5) | BN gain | Tent extra | BN share | Tent better / worse than BN (of 75) |
+|---|---|---|---|---|---|---|---|---|---|
+| Standard s1 | 25.90 | 10.08 | 2.55 | 80% | 43.64 | 21.63 | 3.62 | 86% | 74 / 0 |
+| Standard s2 | 25.87 | 9.99 | 2.28 | 81% | 43.84 | 21.70 | 3.31 | 87% | 73 / 0 |
+| CutMix s1 | 28.50 | 13.17 | 3.11 | 81% | 46.07 | 23.86 | 4.73 | 83% | 72 / 0 |
+| AugMix no JSD s1 | 13.19 | 1.24 | 1.76 | 41% | 21.89 | 5.62 | 2.62 | 68% | 72 / 0 |
+| AugMix s1 | 10.84 | 0.32 | 1.47 | 18% | 17.38 | 3.49 | 2.16 | 62% | 75 / 0 |
+| AugMix s2 | 11.17 | 0.80 | 1.40 | 36% | 17.89 | 4.29 | 1.98 | 68% | 75 / 0 |
+
+**Tent extra by corruption family (all severities, points):**
+
+| Model | Noise | Blur | Weather | Digital |
+|---|---|---|---|---|
+| Standard s1 / s2 | 5.16 / 4.74 | 1.71 / 1.68 | 1.80 / 1.53 | 2.16 / 1.80 |
+| CutMix s1 | 6.17 | 1.84 | 1.83 | 3.36 |
+| AugMix no JSD s1 | 2.80 | 1.49 | 1.50 | 1.50 |
+| AugMix s1 / s2 | 1.87 / 1.71 | 1.39 / 1.31 | 1.32 / 1.22 | 1.40 / 1.42 |
+
+**At severity 1** BN-adapt is worse than no adaptation for every AugMix model (−0.99 to −1.32 points) and Tent more than makes up for it (+0.98 to +1.23). For Standard and CutMix, BN-adapt still helps at severity 1 (+1.2 to +3.3).
+
+**Clean test set (error %, none / BN-adapt / Tent):** Standard 4.92 / 6.69 / 5.93 and 5.03 / 6.86 / 5.69, CutMix 3.82 / 5.04 / 4.70, AugMix no JSD 4.69 / 6.41 / 5.45, AugMix 4.79 / 6.33 / 5.42 and 4.72 / 6.12 / 5.32. Tent is significantly better than BN-adapt on clean data for every model, but still worse than no adaptation.
+
+**Answer to RQ3:**
+1. **Tent always adds something on top of BN-adapt.** For every model it is significantly better on 72–75 of the 75 conditions and never significantly worse, and it is better on clean data too.
+2. **How much: 1.4–3.1 points over all 75 conditions, 2.0–4.7 at severity 5.** That fits H3's "about 2 points": about 2.4 for Standard, 3.1 for CutMix, 1.4–1.8 for AugMix. The public WideResNets in E1 gave 1.9 (Standard) and 2.4 (AugMix) at severity 5.
+3. **"Most of the gain comes from BN-adapt" holds only for models without corruption-like augmentation.** For Standard and CutMix, BN-adapt gives 80–87% of the total gain. For AugMix, BN-adapt gives only 18–41% over all severities, because it hurts at low severities, and 62–68% at severity 5. On AugMix, Tent's extra gain is larger than BN-adapt's own gain over all severities.
+4. **The total gain is much smaller for AugMix, as H3 predicted:** 1.8–3.0 points over all conditions (5.7–8.2 at severity 5) against 12.3–16.3 (25.0–28.6) for Standard and CutMix. AugMix is still the most accurate after adaptation (Tent: 8.97–9.05, against 12.22–13.60).
+5. **Where Tent adds most: noise.** Tent's extra gain on noise is 4.7–6.2 points for Standard and CutMix, 2–3 times its gain on the other families. AugMix already handles noise better, so Tent adds only 1.7–2.8 there.
+6. **JSD matters a little here too:** AugMix without JSD gets more from adaptation (3.0 points over all conditions) than AugMix with JSD (1.8–2.2), because it starts worse (13.2 vs 10.8–11.2), but it still ends worse after Tent (10.2 vs 9.0).
+
 ---
 
 ## 6. What the results tell us
 
-Points 1–6 come from the Standard models; point 7 compares all 6 models.
+Points 1–6 come from the Standard models; point 7 compares all 6 models. RQ3 for all 6 models is answered in section 5.6.
 
-1. **H3 (most of the gain is BN-adapt; Tent adds about 2 points): supported on our ResNet-18.** At severity 5, BN-adapt takes error from 43.7 to 22.1 (−21.6); Tent adds −3.5 (18.6). The same pattern as the public WRN-28-10 in E1.
+1. **H3 (most of the gain is BN-adapt; Tent adds about 2 points): supported on our ResNet-18.** At severity 5, BN-adapt takes error from 43.7 to 22.1 (−21.6); Tent adds −3.5 (18.6). The same pattern as the public WRN-28-10 in E1. For AugMix models the first half of H3 does not hold (section 5.6).
 2. **Adaptation is not free, even episodically.** BN-adapt is worse than no adaptation on about a quarter of the 75 corrupted conditions and on clean data (+1.8 points); Tent on less than a tenth, and on clean data too. The harm sits on clean data, mild severities and the easy corruptions (brightness, JPEG, fog), where the model was already good. This matches the AugMix WRN result in E1: adaptation hurts where the source model is already right.
 3. **RQ4, the difficult streams:**
    - **Small batch hurts both methods** at severity 5: BN-adapt 22.1 → 24.8 (+2.7), Tent 18.6 → 23.1 (+4.5). With batch 16, Tent keeps only 1.7 points of its 3.5-point lead over BN-adapt.
