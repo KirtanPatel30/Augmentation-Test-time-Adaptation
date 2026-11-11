@@ -2,7 +2,7 @@
 
 **Project:** Does Augmentation Make Test-Time Adaptation Safer? (CMPE 252, Fall 2026)
 **Branch:** `member2/stage2-adaptation-eval` (pull request #3 into `main`)
-**Last updated:** November 2, 2026 (week 4 of 8)
+**Last updated:** November 10, 2026 (week 5 of 8)
 
 ---
 
@@ -19,7 +19,7 @@
 | **E2 + E3:** none / BN-adapt / Tent, 75 conditions + clean | ✅ All 6 models |
 | **E4:** continual and small-batch streams (RQ4) | ✅ All 6 models, Tent continual 3 times each |
 | **E5:** help/harm maps and calibration (RQ5) | ✅ Maps for every run, comparison across augmentations (section 5.5) |
-| **E6:** optional extensions | Periodic reset (`--reset-every`) implemented, not run yet |
+| **E6:** optional extensions | ✅ Periodic reset on continual Tent for Standard s2 and CutMix (section 5.7) |
 
 ---
 
@@ -225,6 +225,29 @@ Episodic protocol, batch 200. "BN gain" = error(none) − error(BN-adapt); "Tent
 5. **Where Tent adds most: noise.** Tent's extra gain on noise is 4.7–6.2 points for Standard and CutMix, 2–3 times its gain on the other families. AugMix already handles noise better, so Tent adds only 1.7–2.8 there.
 6. **JSD matters a little here too:** AugMix without JSD gets more from adaptation (3.0 points over all conditions) than AugMix with JSD (1.8–2.2), because it starts worse (13.2 vs 10.8–11.2), but it still ends worse after Tent (10.2 vs 9.0).
 
+### 5.7 E6: Tent continual with a periodic reset
+
+Continual stream (15 corruptions at severity 5, batch 200, no reset at condition boundaries) on the two models where plain continual Tent drifts. Tent is reset to the source model every 30, 100 or 320 batches (6,000, 20,000 or 64,000 images; 320 batches is RDumb's 1,000 steps × 64 images). None of these intervals lines up with the 50-batch conditions, so the method does not know when the corruption changes. Each setting ran 3 times. Made by `scripts/run_e6.sh` (Kaggle: `notebooks/e6_kaggle.ipynb`); files in `results/e6/`.
+
+| Model | Reset every | Sev. 5 error, mean (range of 3) | ECE | Harm rate (of 15) | Collapse (max) |
+|---|---|---|---|---|---|
+| Standard s2 | never (section 5.5) | 25.97 (23.38–28.74) | 22.7 | 0.20 | 0.34 (up to 0.40) |
+| | 30 | 19.92 (19.92–19.92) | 13.0 | 0 | 0.155 |
+| | **100** | **18.55 (18.53–18.55)** | 13.0 | 0 | 0.170 |
+| | 320 | 19.88 (19.60–20.33) | 15.6 | 0.04 | 0.27 (up to 0.30) |
+| CutMix s1 | never (section 5.5) | 24.18 (21.30–25.68) | 20.9 | 0.20 | 0.34 (up to 0.40) |
+| | 30 | 18.48 (18.48–18.49) | 9.0 | 0 | 0.149 |
+| | **100** | **17.53 (17.53–17.54)** | 11.1 | 0 | 0.166 |
+| | 320 | 19.32 (18.92–19.82) | 14.9 | 0.07 | 0.22 |
+
+For comparison at severity 5: BN-adapt (no state) 22.14 (Standard s2) and 22.21 (CutMix); episodic Tent, which is reset exactly at every condition boundary, 18.84 and 17.48.
+
+**What E6 shows:**
+1. **A periodic reset removes the failure of continual Tent.** Resetting every 100 batches brings the error from 26.0 to 18.5 (Standard s2) and from 24.2 to 17.5 (CutMix), well below BN-adapt (22.1–22.2). It matches episodic Tent, which needs to know where each condition starts; for Standard s2 it is even 0.3 points better.
+2. **It also removes the run-to-run variation.** With resets every 30 or 100 batches the 3 runs agree within 0.02 points, against 4–5 points without reset. The GPU rounding differences no longer have time to grow.
+3. **No harm, no collapse.** The harm rate drops from 3/15 to 0, and collapse goes back to the BN-adapt level (0.15–0.17). ECE roughly halves (21–23 → 9–13), though for CutMix it is still above BN-adapt's 4.2.
+4. **The interval matters.** Every 320 batches (RDumb's interval) is too long for this stream: drift starts again (collapse up to 0.30, one harmed condition, 0.7–0.9 points between runs). Every 30 batches is too short: Tent has less time to adapt, so the error is 1–1.4 points higher than with 100. About two conditions' worth of data (100 batches) worked best for both models. We chose the intervals before seeing results and tested only these 3, so 100 is the best of 3, not a tuned value.
+
 ---
 
 ## 6. What the results tell us
@@ -258,7 +281,7 @@ Points 1–6 come from the Standard models; point 7 compares all 6 models. RQ3 f
 | 3 (Oct 26) | Tent learning rate, episodic tests on finished models | ✅ Done (Standard seeds 1–2) |
 | 4 (Nov 2) | Episodic tests on all models, ECE from saved predictions | ✅ Done (all 6 models) |
 | 5 (Nov 9) | Continual stream on all models | ✅ Done (3 runs per model) |
-| 6 (Nov 16) | Small-batch stream, harm rate, collapse; optional E6 | ✅ Done; ⏳ optional E6 not run |
+| 6 (Nov 16) | Small-batch stream, harm rate, collapse; optional E6 | ✅ Done, including E6 |
 | 7 to 8 | Together: figures, report, slides, code clean-up | Not started |
 
 ---
@@ -266,9 +289,9 @@ Points 1–6 come from the Standard models; point 7 compares all 6 models. RQ3 f
 ## 8. What is next
 
 ### Yash (Stage 2)
-1. **Optional E6:** periodic reset (`--reset-every`) on continual Tent for Standard s2 and CutMix, the two models where it drifts. About 15 minutes per run on Kaggle.
-2. **Figures for the final report:** one figure with the 6 help/harm maps side by side, and one with the continual-stream plots of the 3 Tent runs per model.
-3. Get pull request #3 reviewed and merged by Kirtan.
+1. **Figures for the final report:** one figure with the 6 help/harm maps side by side, and one with the continual-stream plots of the 3 Tent runs per model (with and without reset).
+2. **Final report, Stage 2 part:** method, RQ3–RQ5 and the short E6 section, from sections 5–6 of this report.
+3. Get the E6 pull request merged by Kirtan.
 
 ### Together (weeks 7–8)
 - Final report: Stage 1 training cost (Kirtan's logs, E2) next to the Stage 2 tables of section 5.5.
@@ -291,4 +314,4 @@ OUT=results bash scripts/run_stage2.sh runs/*/final.pt
 python analyze.py --results results/kaggle_standard
 ```
 
-E1 and learning-rate tables: `results/e1_colab/`. Standard ResNet-18 results (first Kaggle run): `results/kaggle_standard/`. All 6 models: `results/all_models/`. Per-image predictions are kept out of git and can be regenerated with the commands above.
+E1 and learning-rate tables: `results/e1_colab/`. Standard ResNet-18 results (first Kaggle run): `results/kaggle_standard/`. All 6 models: `results/all_models/`. E6: `results/e6/`. Per-image predictions are kept out of git and can be regenerated with the commands above.

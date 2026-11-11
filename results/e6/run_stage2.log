@@ -1,0 +1,383 @@
+=== 02:17:01 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/cutmix_seed1/final.pt --method none --protocol continual
+run cutmix_seed1_none_continual_bs200 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 89.18%  (6.5s)
+          shot_noise s5  error 87.82%  (3.7s)
+       impulse_noise s5  error 84.04%  (3.7s)
+        defocus_blur s5  error 48.72%  (3.7s)
+          glass_blur s5  error 45.16%  (3.7s)
+         motion_blur s5  error 35.13%  (3.8s)
+           zoom_blur s5  error 41.27%  (3.8s)
+                snow s5  error 21.47%  (3.8s)
+               frost s5  error 34.11%  (3.8s)
+                 fog s5  error 24.30%  (3.8s)
+          brightness s5  error  8.13%  (3.8s)
+            contrast s5  error 46.17%  (3.8s)
+   elastic_transform s5  error 26.15%  (3.9s)
+            pixelate s5  error 64.85%  (3.9s)
+    jpeg_compression s5  error 34.51%  (3.9s)
+mean corruption error 46.07% over 15 conditions, 61s total
+=== 02:18:06 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/cutmix_seed1/final.pt --method tent --protocol continual --reset-every 30
+run cutmix_seed1_tent_continual_bs200_lr0.001_reset30 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 31.71%  (9.2s)
+          shot_noise s5  error 28.47%  (8.6s)
+       impulse_noise s5  error 33.00%  (8.7s)
+        defocus_blur s5  error  9.89%  (8.8s)
+          glass_blur s5  error 30.74%  (8.9s)
+         motion_blur s5  error 11.56%  (8.9s)
+           zoom_blur s5  error  9.55%  (9.0s)
+                snow s5  error 14.66%  (9.0s)
+               frost s5  error 15.23%  (8.9s)
+                 fog s5  error 11.52%  (8.9s)
+          brightness s5  error  6.86%  (8.8s)
+            contrast s5  error  9.81%  (8.8s)
+   elastic_transform s5  error 19.91%  (8.9s)
+            pixelate s5  error 19.98%  (8.9s)
+    jpeg_compression s5  error 24.33%  (8.9s)
+mean corruption error 18.48% over 15 conditions, 134s total
+=== 02:20:25 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/cutmix_seed1/final.pt --method tent --protocol continual --reset-every 30 --tag rep2
+run cutmix_seed1_tent_continual_bs200_lr0.001_reset30_rep2 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 31.72%  (9.5s)
+          shot_noise s5  error 28.46%  (8.9s)
+       impulse_noise s5  error 33.01%  (9.0s)
+        defocus_blur s5  error  9.89%  (8.9s)
+          glass_blur s5  error 30.75%  (8.9s)
+         motion_blur s5  error 11.55%  (8.9s)
+           zoom_blur s5  error  9.55%  (8.9s)
+                snow s5  error 14.67%  (8.9s)
+               frost s5  error 15.23%  (8.9s)
+                 fog s5  error 11.53%  (8.9s)
+          brightness s5  error  6.87%  (8.9s)
+            contrast s5  error  9.82%  (8.9s)
+   elastic_transform s5  error 19.88%  (8.9s)
+            pixelate s5  error 19.97%  (8.9s)
+    jpeg_compression s5  error 24.32%  (8.9s)
+mean corruption error 18.48% over 15 conditions, 135s total
+=== 02:22:44 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/cutmix_seed1/final.pt --method tent --protocol continual --reset-every 30 --tag rep3
+run cutmix_seed1_tent_continual_bs200_lr0.001_reset30_rep3 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 31.74%  (9.4s)
+          shot_noise s5  error 28.48%  (8.9s)
+       impulse_noise s5  error 33.01%  (9.0s)
+        defocus_blur s5  error  9.89%  (8.9s)
+          glass_blur s5  error 30.75%  (8.9s)
+         motion_blur s5  error 11.56%  (8.9s)
+           zoom_blur s5  error  9.55%  (8.9s)
+                snow s5  error 14.67%  (8.9s)
+               frost s5  error 15.23%  (8.9s)
+                 fog s5  error 11.52%  (8.9s)
+          brightness s5  error  6.86%  (8.9s)
+            contrast s5  error  9.83%  (8.9s)
+   elastic_transform s5  error 19.87%  (8.9s)
+            pixelate s5  error 19.98%  (8.9s)
+    jpeg_compression s5  error 24.34%  (8.9s)
+mean corruption error 18.49% over 15 conditions, 135s total
+=== 02:25:03 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/cutmix_seed1/final.pt --method tent --protocol continual --reset-every 100
+run cutmix_seed1_tent_continual_bs200_lr0.001_reset100 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 28.93%  (9.4s)
+          shot_noise s5  error 22.43%  (8.9s)
+       impulse_noise s5  error 32.58%  (9.0s)
+        defocus_blur s5  error 11.83%  (8.9s)
+          glass_blur s5  error 29.20%  (8.9s)
+         motion_blur s5  error 14.19%  (8.9s)
+           zoom_blur s5  error  9.25%  (8.9s)
+                snow s5  error 13.29%  (8.9s)
+               frost s5  error 14.84%  (8.9s)
+                 fog s5  error 12.44%  (8.9s)
+          brightness s5  error  6.78%  (8.9s)
+            contrast s5  error  8.73%  (8.9s)
+   elastic_transform s5  error 19.01%  (8.9s)
+            pixelate s5  error 16.32%  (8.9s)
+    jpeg_compression s5  error 23.10%  (8.9s)
+mean corruption error 17.53% over 15 conditions, 135s total
+=== 02:27:22 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/cutmix_seed1/final.pt --method tent --protocol continual --reset-every 100 --tag rep2
+run cutmix_seed1_tent_continual_bs200_lr0.001_reset100_rep2 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 28.89%  (9.4s)
+          shot_noise s5  error 22.41%  (8.9s)
+       impulse_noise s5  error 32.58%  (9.0s)
+        defocus_blur s5  error 11.95%  (8.9s)
+          glass_blur s5  error 29.27%  (8.9s)
+         motion_blur s5  error 14.17%  (8.9s)
+           zoom_blur s5  error  9.25%  (8.9s)
+                snow s5  error 13.34%  (8.9s)
+               frost s5  error 14.84%  (8.9s)
+                 fog s5  error 12.36%  (8.9s)
+          brightness s5  error  6.77%  (8.9s)
+            contrast s5  error  8.68%  (8.9s)
+   elastic_transform s5  error 19.07%  (8.9s)
+            pixelate s5  error 16.40%  (8.9s)
+    jpeg_compression s5  error 23.05%  (8.9s)
+mean corruption error 17.54% over 15 conditions, 135s total
+=== 02:29:41 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/cutmix_seed1/final.pt --method tent --protocol continual --reset-every 100 --tag rep3
+run cutmix_seed1_tent_continual_bs200_lr0.001_reset100_rep3 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 28.91%  (9.4s)
+          shot_noise s5  error 22.30%  (8.9s)
+       impulse_noise s5  error 32.59%  (8.9s)
+        defocus_blur s5  error 11.95%  (8.9s)
+          glass_blur s5  error 29.25%  (8.9s)
+         motion_blur s5  error 14.24%  (8.9s)
+           zoom_blur s5  error  9.25%  (8.9s)
+                snow s5  error 13.29%  (8.9s)
+               frost s5  error 14.82%  (8.9s)
+                 fog s5  error 12.30%  (8.9s)
+          brightness s5  error  6.78%  (8.9s)
+            contrast s5  error  8.76%  (8.9s)
+   elastic_transform s5  error 18.99%  (8.9s)
+            pixelate s5  error 16.40%  (8.9s)
+    jpeg_compression s5  error 23.06%  (8.9s)
+mean corruption error 17.53% over 15 conditions, 135s total
+=== 02:32:00 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/cutmix_seed1/final.pt --method tent --protocol continual --reset-every 320
+run cutmix_seed1_tent_continual_bs200_lr0.001_reset320 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 28.92%  (9.4s)
+          shot_noise s5  error 22.40%  (8.9s)
+       impulse_noise s5  error 29.29%  (8.9s)
+        defocus_blur s5  error 16.07%  (8.9s)
+          glass_blur s5  error 30.74%  (8.9s)
+         motion_blur s5  error 20.20%  (8.9s)
+           zoom_blur s5  error 12.93%  (8.9s)
+                snow s5  error 14.02%  (8.9s)
+               frost s5  error 14.36%  (8.9s)
+                 fog s5  error 14.77%  (8.9s)
+          brightness s5  error  9.14%  (8.9s)
+            contrast s5  error 12.52%  (8.9s)
+   elastic_transform s5  error 22.39%  (8.9s)
+            pixelate s5  error 18.36%  (8.9s)
+    jpeg_compression s5  error 21.99%  (8.9s)
+mean corruption error 19.21% over 15 conditions, 135s total
+=== 02:34:19 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/cutmix_seed1/final.pt --method tent --protocol continual --reset-every 320 --tag rep2
+run cutmix_seed1_tent_continual_bs200_lr0.001_reset320_rep2 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 28.90%  (9.4s)
+          shot_noise s5  error 22.59%  (8.9s)
+       impulse_noise s5  error 28.94%  (9.0s)
+        defocus_blur s5  error 15.52%  (8.9s)
+          glass_blur s5  error 31.94%  (8.9s)
+         motion_blur s5  error 19.53%  (8.9s)
+           zoom_blur s5  error 13.11%  (8.9s)
+                snow s5  error 13.96%  (8.9s)
+               frost s5  error 14.23%  (8.9s)
+                 fog s5  error 14.65%  (8.9s)
+          brightness s5  error  8.73%  (8.9s)
+            contrast s5  error 10.63%  (8.9s)
+   elastic_transform s5  error 20.88%  (8.9s)
+            pixelate s5  error 18.34%  (8.9s)
+    jpeg_compression s5  error 21.85%  (8.9s)
+mean corruption error 18.92% over 15 conditions, 135s total
+=== 02:36:39 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/cutmix_seed1/final.pt --method tent --protocol continual --reset-every 320 --tag rep3
+run cutmix_seed1_tent_continual_bs200_lr0.001_reset320_rep3 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 28.89%  (9.4s)
+          shot_noise s5  error 22.53%  (8.9s)
+       impulse_noise s5  error 30.17%  (9.0s)
+        defocus_blur s5  error 17.73%  (8.9s)
+          glass_blur s5  error 32.45%  (8.9s)
+         motion_blur s5  error 21.42%  (8.9s)
+           zoom_blur s5  error 12.13%  (8.9s)
+                snow s5  error 13.98%  (8.9s)
+               frost s5  error 14.43%  (8.9s)
+                 fog s5  error 15.01%  (8.9s)
+          brightness s5  error 10.72%  (8.9s)
+            contrast s5  error 13.68%  (8.9s)
+   elastic_transform s5  error 23.75%  (8.9s)
+            pixelate s5  error 18.35%  (8.9s)
+    jpeg_compression s5  error 22.05%  (8.9s)
+mean corruption error 19.82% over 15 conditions, 135s total
+=== 02:38:58 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/standard_seed2/final.pt --method none --protocol continual
+run standard_seed2_none_continual_bs200 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 71.86%  (4.5s)
+          shot_noise s5  error 64.62%  (4.1s)
+       impulse_noise s5  error 81.46%  (4.1s)
+        defocus_blur s5  error 48.42%  (4.1s)
+          glass_blur s5  error 50.27%  (4.1s)
+         motion_blur s5  error 35.79%  (4.1s)
+           zoom_blur s5  error 41.79%  (4.1s)
+                snow s5  error 23.34%  (4.1s)
+               frost s5  error 37.17%  (4.1s)
+                 fog s5  error 27.64%  (4.1s)
+          brightness s5  error  8.95%  (4.1s)
+            contrast s5  error 66.87%  (4.1s)
+   elastic_transform s5  error 23.56%  (4.1s)
+            pixelate s5  error 49.34%  (4.1s)
+    jpeg_compression s5  error 26.51%  (4.1s)
+mean corruption error 43.84% over 15 conditions, 63s total
+=== 02:40:04 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/standard_seed2/final.pt --method tent --protocol continual --reset-every 30
+run standard_seed2_tent_continual_bs200_lr0.001_reset30 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 28.71%  (9.4s)
+          shot_noise s5  error 25.91%  (8.9s)
+       impulse_noise s5  error 35.97%  (8.9s)
+        defocus_blur s5  error 11.56%  (9.0s)
+          glass_blur s5  error 33.65%  (8.9s)
+         motion_blur s5  error 13.08%  (8.9s)
+           zoom_blur s5  error 11.54%  (8.9s)
+                snow s5  error 17.03%  (8.9s)
+               frost s5  error 18.14%  (8.9s)
+                 fog s5  error 14.12%  (8.9s)
+          brightness s5  error  8.62%  (8.9s)
+            contrast s5  error 13.86%  (8.9s)
+   elastic_transform s5  error 22.87%  (8.9s)
+            pixelate s5  error 19.37%  (8.9s)
+    jpeg_compression s5  error 24.36%  (8.9s)
+mean corruption error 19.92% over 15 conditions, 135s total
+=== 02:42:23 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/standard_seed2/final.pt --method tent --protocol continual --reset-every 30 --tag rep2
+run standard_seed2_tent_continual_bs200_lr0.001_reset30_rep2 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 28.73%  (9.4s)
+          shot_noise s5  error 25.91%  (8.9s)
+       impulse_noise s5  error 35.94%  (8.9s)
+        defocus_blur s5  error 11.56%  (8.9s)
+          glass_blur s5  error 33.64%  (8.9s)
+         motion_blur s5  error 13.09%  (8.9s)
+           zoom_blur s5  error 11.56%  (8.9s)
+                snow s5  error 17.02%  (8.9s)
+               frost s5  error 18.14%  (8.9s)
+                 fog s5  error 14.13%  (8.9s)
+          brightness s5  error  8.62%  (8.9s)
+            contrast s5  error 13.86%  (8.9s)
+   elastic_transform s5  error 22.86%  (8.9s)
+            pixelate s5  error 19.36%  (8.9s)
+    jpeg_compression s5  error 24.36%  (8.9s)
+mean corruption error 19.92% over 15 conditions, 135s total
+=== 02:44:43 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/standard_seed2/final.pt --method tent --protocol continual --reset-every 30 --tag rep3
+run standard_seed2_tent_continual_bs200_lr0.001_reset30_rep3 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 28.70%  (9.4s)
+          shot_noise s5  error 25.93%  (8.9s)
+       impulse_noise s5  error 35.98%  (9.0s)
+        defocus_blur s5  error 11.56%  (9.0s)
+          glass_blur s5  error 33.65%  (8.9s)
+         motion_blur s5  error 13.08%  (8.9s)
+           zoom_blur s5  error 11.55%  (8.9s)
+                snow s5  error 17.03%  (8.9s)
+               frost s5  error 18.14%  (8.9s)
+                 fog s5  error 14.13%  (8.9s)
+          brightness s5  error  8.64%  (8.9s)
+            contrast s5  error 13.86%  (8.9s)
+   elastic_transform s5  error 22.87%  (8.9s)
+            pixelate s5  error 19.38%  (8.9s)
+    jpeg_compression s5  error 24.36%  (8.9s)
+mean corruption error 19.92% over 15 conditions, 135s total
+=== 02:47:02 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/standard_seed2/final.pt --method tent --protocol continual --reset-every 100
+run standard_seed2_tent_continual_bs200_lr0.001_reset100 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 26.90%  (9.4s)
+          shot_noise s5  error 20.05%  (8.9s)
+       impulse_noise s5  error 34.15%  (9.0s)
+        defocus_blur s5  error 12.40%  (9.0s)
+          glass_blur s5  error 31.16%  (8.9s)
+         motion_blur s5  error 12.83%  (8.9s)
+           zoom_blur s5  error 10.97%  (8.9s)
+                snow s5  error 16.41%  (8.9s)
+               frost s5  error 17.74%  (8.9s)
+                 fog s5  error 13.28%  (8.9s)
+          brightness s5  error  8.17%  (8.9s)
+            contrast s5  error 12.07%  (8.9s)
+   elastic_transform s5  error 21.28%  (8.9s)
+            pixelate s5  error 17.30%  (8.9s)
+    jpeg_compression s5  error 23.51%  (8.9s)
+mean corruption error 18.55% over 15 conditions, 135s total
+=== 02:49:21 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/standard_seed2/final.pt --method tent --protocol continual --reset-every 100 --tag rep2
+run standard_seed2_tent_continual_bs200_lr0.001_reset100_rep2 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 26.88%  (9.4s)
+          shot_noise s5  error 20.01%  (8.9s)
+       impulse_noise s5  error 34.13%  (8.9s)
+        defocus_blur s5  error 12.40%  (8.9s)
+          glass_blur s5  error 31.17%  (8.9s)
+         motion_blur s5  error 12.86%  (8.9s)
+           zoom_blur s5  error 10.95%  (8.9s)
+                snow s5  error 16.47%  (8.9s)
+               frost s5  error 17.78%  (8.9s)
+                 fog s5  error 13.29%  (8.9s)
+          brightness s5  error  8.18%  (8.9s)
+            contrast s5  error 12.02%  (8.9s)
+   elastic_transform s5  error 21.31%  (8.9s)
+            pixelate s5  error 17.35%  (8.9s)
+    jpeg_compression s5  error 23.53%  (8.9s)
+mean corruption error 18.56% over 15 conditions, 135s total
+=== 02:51:40 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/standard_seed2/final.pt --method tent --protocol continual --reset-every 100 --tag rep3
+run standard_seed2_tent_continual_bs200_lr0.001_reset100_rep3 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 26.87%  (9.4s)
+          shot_noise s5  error 19.99%  (8.9s)
+       impulse_noise s5  error 34.14%  (9.0s)
+        defocus_blur s5  error 12.35%  (8.9s)
+          glass_blur s5  error 31.15%  (8.9s)
+         motion_blur s5  error 12.87%  (8.9s)
+           zoom_blur s5  error 10.97%  (8.9s)
+                snow s5  error 16.42%  (8.9s)
+               frost s5  error 17.72%  (8.9s)
+                 fog s5  error 13.29%  (8.9s)
+          brightness s5  error  8.18%  (8.9s)
+            contrast s5  error 11.98%  (8.9s)
+   elastic_transform s5  error 21.27%  (8.9s)
+            pixelate s5  error 17.31%  (8.9s)
+    jpeg_compression s5  error 23.51%  (8.9s)
+mean corruption error 18.53% over 15 conditions, 135s total
+=== 02:53:59 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/standard_seed2/final.pt --method tent --protocol continual --reset-every 320
+run standard_seed2_tent_continual_bs200_lr0.001_reset320 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 26.87%  (9.4s)
+          shot_noise s5  error 20.02%  (8.9s)
+       impulse_noise s5  error 30.74%  (8.9s)
+        defocus_blur s5  error 15.82%  (9.0s)
+          glass_blur s5  error 31.61%  (8.9s)
+         motion_blur s5  error 21.82%  (8.9s)
+           zoom_blur s5  error 15.78%  (8.9s)
+                snow s5  error 16.04%  (8.9s)
+               frost s5  error 16.73%  (8.9s)
+                 fog s5  error 14.66%  (8.9s)
+          brightness s5  error  9.30%  (8.9s)
+            contrast s5  error 12.79%  (8.9s)
+   elastic_transform s5  error 23.15%  (8.9s)
+            pixelate s5  error 17.39%  (8.9s)
+    jpeg_compression s5  error 21.29%  (8.9s)
+mean corruption error 19.60% over 15 conditions, 135s total
+=== 02:56:19 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/standard_seed2/final.pt --method tent --protocol continual --reset-every 320 --tag rep2
+run standard_seed2_tent_continual_bs200_lr0.001_reset320_rep2 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 26.88%  (9.4s)
+          shot_noise s5  error 20.07%  (8.9s)
+       impulse_noise s5  error 30.88%  (8.9s)
+        defocus_blur s5  error 17.84%  (8.9s)
+          glass_blur s5  error 34.93%  (8.9s)
+         motion_blur s5  error 26.14%  (8.9s)
+           zoom_blur s5  error 17.31%  (8.9s)
+                snow s5  error 16.02%  (8.9s)
+               frost s5  error 16.81%  (8.9s)
+                 fog s5  error 14.80%  (8.9s)
+          brightness s5  error  9.59%  (8.9s)
+            contrast s5  error 12.01%  (8.9s)
+   elastic_transform s5  error 23.13%  (8.9s)
+            pixelate s5  error 17.35%  (8.9s)
+    jpeg_compression s5  error 21.19%  (8.9s)
+mean corruption error 20.33% over 15 conditions, 135s total
+=== 02:58:38 python eval.py --model /kaggle/input/datasets/yashpatel054/cmpe252-stage1-models/stage1_models/standard_seed2/final.pt --method tent --protocol continual --reset-every 320 --tag rep3
+run standard_seed2_tent_continual_bs200_lr0.001_reset320_rep3 on cuda: 15 conditions, batch 200
+      gaussian_noise s5  error 26.85%  (9.3s)
+          shot_noise s5  error 19.97%  (8.9s)
+       impulse_noise s5  error 30.84%  (8.9s)
+        defocus_blur s5  error 16.33%  (8.9s)
+          glass_blur s5  error 33.06%  (8.9s)
+         motion_blur s5  error 21.91%  (8.9s)
+           zoom_blur s5  error 14.79%  (8.9s)
+                snow s5  error 16.04%  (8.9s)
+               frost s5  error 16.72%  (8.9s)
+                 fog s5  error 14.96%  (8.9s)
+          brightness s5  error 10.46%  (8.9s)
+            contrast s5  error 12.20%  (8.9s)
+   elastic_transform s5  error 22.94%  (8.9s)
+            pixelate s5  error 17.38%  (8.9s)
+    jpeg_compression s5  error 21.26%  (8.9s)
+mean corruption error 19.71% over 15 conditions, 135s total
+=== 03:00:57 python analyze.py
+run                                                          corr err   sev5    ECE  harm collapse
+cutmix_seed1_none_continual_bs200                               46.07  46.07  21.47 -    0.984
+cutmix_seed1_tent_continual_bs200_lr0.001_reset100              17.53  17.53  11.11  0.00    0.166
+cutmix_seed1_tent_continual_bs200_lr0.001_reset100_rep2         17.54  17.54  11.12  0.00    0.166
+cutmix_seed1_tent_continual_bs200_lr0.001_reset100_rep3         17.53  17.53  11.12  0.00    0.166
+cutmix_seed1_tent_continual_bs200_lr0.001_reset30               18.48  18.48   9.00  0.00    0.149
+cutmix_seed1_tent_continual_bs200_lr0.001_reset30_rep2          18.48  18.48   9.00  0.00    0.149
+cutmix_seed1_tent_continual_bs200_lr0.001_reset30_rep3          18.48  18.48   9.00  0.00    0.149
+cutmix_seed1_tent_continual_bs200_lr0.001_reset320              19.21  19.21  14.83  0.07    0.221
+cutmix_seed1_tent_continual_bs200_lr0.001_reset320_rep2         18.92  18.92  14.54  0.07    0.216
+cutmix_seed1_tent_continual_bs200_lr0.001_reset320_rep3         19.82  19.82  15.47  0.07    0.213
+standard_seed2_none_continual_bs200                             43.84  43.84  30.72 -    0.856
+standard_seed2_tent_continual_bs200_lr0.001_reset100            18.55  18.55  13.02  0.00    0.170
+standard_seed2_tent_continual_bs200_lr0.001_reset100_rep2       18.55  18.55  13.03  0.00    0.171
+standard_seed2_tent_continual_bs200_lr0.001_reset100_rep3       18.53  18.53  13.01  0.00    0.169
+standard_seed2_tent_continual_bs200_lr0.001_reset30             19.92  19.92  13.00  0.00    0.155
+standard_seed2_tent_continual_bs200_lr0.001_reset30_rep2        19.92  19.92  13.00  0.00    0.154
+standard_seed2_tent_continual_bs200_lr0.001_reset30_rep3        19.92  19.92  13.00  0.00    0.155
+standard_seed2_tent_continual_bs200_lr0.001_reset320            19.60  19.60  15.37  0.00    0.268
+standard_seed2_tent_continual_bs200_lr0.001_reset320_rep2       20.33  20.33  16.10  0.07    0.300
+standard_seed2_tent_continual_bs200_lr0.001_reset320_rep3       19.71  19.71  15.46  0.07    0.240
+=== 03:01:27 done
