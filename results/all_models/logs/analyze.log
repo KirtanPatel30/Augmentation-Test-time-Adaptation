@@ -52,8 +52,8 @@ standard_seed1_bn_episodic_bs200                                15.82  22.01   8
 standard_seed1_bn_small_batch_bs16                              24.80  24.80  14.52  0.20    0.141
 standard_seed1_none_episodic_bs200                              25.90  43.64  17.90 -    0.851
 standard_seed1_tent_continual_bs200_lr0.001                     18.38  18.38  14.88  0.07    0.174
-standard_seed1_tent_continual_bs200_lr0.001_rep2                20.44  20.44  16.98 -    0.232
-standard_seed1_tent_continual_bs200_lr0.001_rep3                19.15  19.15  15.64 -    0.196
+standard_seed1_tent_continual_bs200_lr0.001_rep2                20.44  20.44  16.98  0.13    0.232
+standard_seed1_tent_continual_bs200_lr0.001_rep3                19.15  19.15  15.64  0.07    0.196
 standard_seed1_tent_episodic_bs200_lr0.001                      13.27  18.39   8.51  0.09    0.173
 standard_seed1_tent_episodic_bs200_lr0.001_shuf1                18.28  18.28  12.08  0.00    0.153
 standard_seed1_tent_episodic_bs200_lr0.001_shuf2                18.08  18.08  11.87  0.00    0.160
@@ -64,8 +64,8 @@ standard_seed2_bn_episodic_bs200                                15.88  22.14   9
 standard_seed2_bn_small_batch_bs16                              24.74  24.74  14.70  0.20    0.140
 standard_seed2_none_episodic_bs200                              25.87  43.84  17.22 -    0.856
 standard_seed2_tent_continual_bs200_lr0.001                     23.38  23.38  20.09  0.20    0.280
-standard_seed2_tent_continual_bs200_lr0.001_rep2                25.80  25.80  22.55 -    0.348
-standard_seed2_tent_continual_bs200_lr0.001_rep3                28.74  28.74  25.55 -    0.405
+standard_seed2_tent_continual_bs200_lr0.001_rep2                25.80  25.80  22.55  0.27    0.348
+standard_seed2_tent_continual_bs200_lr0.001_rep3                28.74  28.74  25.55  0.33    0.405
 standard_seed2_tent_episodic_bs200_lr0.001                      13.60  18.83   8.96  0.07    0.176
 standard_seed2_tent_episodic_bs200_lr0.001_shuf1                18.88  18.88  12.70  0.00    0.167
 standard_seed2_tent_episodic_bs200_lr0.001_shuf2                18.72  18.72  12.60  0.00    0.164

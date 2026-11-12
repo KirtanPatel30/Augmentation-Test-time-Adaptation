@@ -46,10 +46,14 @@ def aligned_correct(entry):
 
 
 def find_reference(runs, meta):
-    """The no-adaptation run of the same model (any protocol: source predictions do not depend on order)."""
+    """The no-adaptation run of the same model (any protocol: source predictions do not depend on order).
+
+    Models are matched by tag, not path: the same checkpoint can sit at different paths in
+    different runs (e.g. two versions of a Kaggle dataset).
+    """
     best = None
     for other_meta, other_conds in runs:
-        if other_meta["model"] != meta["model"] or other_meta["method"] != "none":
+        if model_tag(other_meta["model"]) != model_tag(meta["model"]) or other_meta["method"] != "none":
             continue
         if other_meta["n_examples"] != meta["n_examples"]:
             continue
