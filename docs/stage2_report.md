@@ -2,7 +2,7 @@
 
 **Project:** Does Augmentation Make Test-Time Adaptation Safer? (CMPE 252, Fall 2026)
 **Branch:** `member2/stage2-adaptation-eval` (pull request #3 into `main`)
-**Last updated:** November 10, 2026 (week 5 of 8)
+**Last updated:** November 11, 2026 (week 6 of 8)
 
 ---
 
@@ -77,6 +77,7 @@
 | 9 | Colab for the full run; results linked into the repo's `results/` folder. | Colab disconnects idle sessions. On Kaggle, `ln -sfn /kaggle/working/results results` made the link *inside* the existing `results/` folder, so Version 1 saved nothing (166 B output). | Kaggle notebook passes `OUT=/kaggle/working/results` to `run_stage2.sh`; Colab notebook moves the repo folder aside first. |
 | 10 | One Tent continual run per model. | The same run gave different numbers on two Kaggle runs (up to 1 point), and the two Standard seeds differed by 5 points. | 3 Tent continual runs per model (`REPEATS`, runs named `..._rep2`, `..._rep3`). |
 | 11 | Harm and help rates over every episodic condition, clean included (76). | The proposal defines the harm rate over the 75 CIFAR-10-C conditions; counting clean mixed two questions. Found in the pull request review. | `analyze.py` counts only corrupted conditions and reports clean separately (`clean_effect` in `runs.csv`). Episodic harm rates went down by about 0.01; no conclusion changed. |
+| 12 | `analyze.py` found the no-adaptation reference run by checkpoint path. | The extra Tent continual runs of the Standard models came from the second Kaggle run, where the checkpoints sit under a different path, so they got no harm rate. The "mean of 3" harm rates for Standard were really from 1 run. | The reference is matched by model name (`model_tag`). Standard Tent continual harm: 0.09 and 0.27 (was 0.07 and 0.20); largest harm +16.2 (Standard s2, brightness). |
 
 ---
 
@@ -178,8 +179,8 @@ Our ResNet-18, one row per Stage 1 model. Errors in %. Tent continual is the mea
 
 | Model | BN small batch | Tent small batch | Tent continual harm (mean of 3) | Tent continual collapse (3 runs) |
 |---|---|---|---|---|
-| Standard s1 | 0.20 | 0.20 | 0.07 | 0.17 / 0.23 / 0.20 |
-| Standard s2 | 0.20 | 0.20 | 0.20 | 0.28 / 0.35 / **0.40** |
+| Standard s1 | 0.20 | 0.20 | 0.09 | 0.17 / 0.23 / 0.20 |
+| Standard s2 | 0.20 | 0.20 | 0.27 | 0.28 / 0.35 / **0.40** |
 | CutMix s1 | 0.07 | 0.07 | 0.20 | 0.33 / **0.40** / 0.28 |
 | AugMix no JSD s1 | 0.47 | 0.33 | 0.36 | 0.20 / 0.32 / 0.20 |
 | AugMix s1 | 0.47 | 0.40 | 0.36 | 0.20 / 0.20 / 0.23 |
@@ -213,7 +214,7 @@ Episodic protocol, batch 200. "BN gain" = error(none) − error(BN-adapt); "Tent
 | AugMix no JSD s1 | 2.80 | 1.49 | 1.50 | 1.50 |
 | AugMix s1 / s2 | 1.87 / 1.71 | 1.39 / 1.31 | 1.32 / 1.22 | 1.40 / 1.42 |
 
-**At severity 1** BN-adapt is worse than no adaptation for every AugMix model (−0.99 to −1.32 points) and Tent more than makes up for it (+0.98 to +1.23). For Standard and CutMix, BN-adapt still helps at severity 1 (+1.2 to +3.3).
+**At severity 1** BN-adapt is worse than no adaptation for every AugMix model (−0.99 to −1.32 points). Tent wins back +0.98 to +1.23 points, which fully makes up the loss only for AugMix without JSD (net +0.25); AugMix + JSD stays slightly worse than no adaptation (net −0.32 and −0.04). For Standard and CutMix, BN-adapt still helps at severity 1 (+1.2 to +3.3).
 
 **Clean test set (error %, none / BN-adapt / Tent):** Standard 4.92 / 6.69 / 5.93 and 5.03 / 6.86 / 5.69, CutMix 3.82 / 5.04 / 4.70, AugMix no JSD 4.69 / 6.41 / 5.45, AugMix 4.79 / 6.33 / 5.42 and 4.72 / 6.12 / 5.32. Tent is significantly better than BN-adapt on clean data for every model, but still worse than no adaptation.
 
@@ -221,8 +222,8 @@ Episodic protocol, batch 200. "BN gain" = error(none) − error(BN-adapt); "Tent
 1. **Tent always adds something on top of BN-adapt.** For every model it is significantly better on 72–75 of the 75 conditions and never significantly worse, and it is better on clean data too.
 2. **How much: 1.4–3.1 points over all 75 conditions, 2.0–4.7 at severity 5.** That fits H3's "about 2 points": about 2.4 for Standard, 3.1 for CutMix, 1.4–1.8 for AugMix. The public WideResNets in E1 gave 1.9 (Standard) and 2.4 (AugMix) at severity 5.
 3. **"Most of the gain comes from BN-adapt" holds only for models without corruption-like augmentation.** For Standard and CutMix, BN-adapt gives 80–87% of the total gain. For AugMix, BN-adapt gives only 18–41% over all severities, because it hurts at low severities, and 62–68% at severity 5. On AugMix, Tent's extra gain is larger than BN-adapt's own gain over all severities.
-4. **The total gain is much smaller for AugMix, as H3 predicted:** 1.8–3.0 points over all conditions (5.7–8.2 at severity 5) against 12.3–16.3 (25.0–28.6) for Standard and CutMix. AugMix is still the most accurate after adaptation (Tent: 8.97–9.05, against 12.22–13.60).
-5. **Where Tent adds most: noise.** Tent's extra gain on noise is 4.7–6.2 points for Standard and CutMix, 2–3 times its gain on the other families. AugMix already handles noise better, so Tent adds only 1.7–2.8 there.
+4. **The total gain is much smaller for AugMix, as H3 predicted:** 1.8–3.0 points over all conditions (5.6–8.2 at severity 5) against 12.3–16.3 (25.0–28.6) for Standard and CutMix. AugMix is still the most accurate after adaptation (Tent: 8.97–9.05, against 12.22–13.60).
+5. **Where Tent adds most: noise.** Tent's extra gain on noise is 4.7–6.2 points for Standard and CutMix, about 3 times its gain on blur and weather. AugMix already handles noise better, so Tent adds only 1.7–2.8 there.
 6. **JSD matters a little here too:** AugMix without JSD gets more from adaptation (3.0 points over all conditions) than AugMix with JSD (1.8–2.2), because it starts worse (13.2 vs 10.8–11.2), but it still ends worse after Tent (10.2 vs 9.0).
 
 ### 5.7 E6: Tent continual with a periodic reset
@@ -231,7 +232,7 @@ Continual stream (15 corruptions at severity 5, batch 200, no reset at condition
 
 | Model | Reset every | Sev. 5 error, mean (range of 3) | ECE | Harm rate (of 15) | Collapse (max) |
 |---|---|---|---|---|---|
-| Standard s2 | never (section 5.5) | 25.97 (23.38–28.74) | 22.7 | 0.20 | 0.34 (up to 0.40) |
+| Standard s2 | never (section 5.5) | 25.97 (23.38–28.74) | 22.7 | 0.27 | 0.34 (up to 0.40) |
 | | 30 | 19.92 (19.92–19.92) | 13.0 | 0 | 0.155 |
 | | **100** | **18.55 (18.53–18.55)** | 13.0 | 0 | 0.170 |
 | | 320 | 19.88 (19.60–20.33) | 15.6 | 0.04 | 0.27 (up to 0.30) |
@@ -245,8 +246,8 @@ For comparison at severity 5: BN-adapt (no state) 22.14 (Standard s2) and 22.21 
 **What E6 shows:**
 1. **A periodic reset removes the failure of continual Tent.** Resetting every 100 batches brings the error from 26.0 to 18.5 (Standard s2) and from 24.2 to 17.5 (CutMix), well below BN-adapt (22.1–22.2). It matches episodic Tent, which needs to know where each condition starts; for Standard s2 it is even 0.3 points better.
 2. **It also removes the run-to-run variation.** With resets every 30 or 100 batches the 3 runs agree within 0.02 points, against 4–5 points without reset. The GPU rounding differences no longer have time to grow.
-3. **No harm, no collapse.** The harm rate drops from 3/15 to 0, and collapse goes back to the BN-adapt level (0.15–0.17). ECE roughly halves (21–23 → 9–13), though for CutMix it is still above BN-adapt's 4.2.
-4. **The interval matters.** Every 320 batches (RDumb's interval) is too long for this stream: drift starts again (collapse up to 0.30, one harmed condition, 0.7–0.9 points between runs). Every 30 batches is too short: Tent has less time to adapt, so the error is 1–1.4 points higher than with 100. About two conditions' worth of data (100 batches) worked best for both models. We chose the intervals before seeing results and tested only these 3, so 100 is the best of 3, not a tuned value.
+3. **No harm, no collapse.** The harm rate drops from 3–4/15 to 0, and collapse goes back to the BN-adapt level (0.15–0.17). ECE roughly halves (21–23 → 9–13), though for CutMix it is still above BN-adapt's 4.2.
+4. **The interval matters.** Every 320 batches (RDumb's interval) is too long for this stream: drift starts again (collapse up to 0.30, one harmed condition, 0.7–0.9 points between runs). Every 30 batches is too short: Tent has less time to adapt, so the error is 0.9–1.4 points higher than with 100. About two conditions' worth of data (100 batches) worked best for both models. We chose the intervals before seeing results and tested only these 3, so 100 is the best of 3, not a tuned value.
 
 ---
 
@@ -264,7 +265,7 @@ Points 1–6 come from the Standard models; point 7 compares all 6 models. RQ3 f
 5. **Order inside a condition does not matter much:** 3 shuffle orders change Tent's severity-5 error by at most 0.25 points, and none is harmful.
 6. **For the next runs:** continual Tent needs repeated runs (at least 3 per model), because a single run moves by up to 1 point between GPU runs and by 5 points between seeds. (Done for all 6 models: the 3 runs differ by up to 5 points.)
 7. **All 6 models: does augmentation make adaptation safer (H4)? It depends on what "safer" means.**
-   - **Lowest error and most stable: AugMix (with JSD).** It has the lowest error in every protocol, and continual Tent works on it: all 3 runs are better than BN-adapt (12.5–14.1 vs 13.6–13.9), with low collapse (≤ 0.23) and the lowest ECE. Without the JSD loss AugMix is worse (16.1) and one of the 3 runs collapses more (0.32) and is 2.8 points worse.
+   - **Lowest error and most stable: AugMix (with JSD).** It has the lowest error in every protocol, and continual Tent works on it: 5 of its 6 runs (2 seeds × 3) are better than BN-adapt (12.5–14.1 vs 13.6–13.9), with low collapse (≤ 0.23) and the lowest ECE. Without the JSD loss AugMix is worse (16.1) and one of the 3 runs collapses more (0.32) and is 2.8 points worse.
    - **Most often harmed: also AugMix.** BN-adapt is worse than no adaptation on 49–63% of AugMix conditions, against 19–25% for Standard and CutMix, and Tent on 21–27% against 5–9%. The harm-rate tables say the opposite of H4: the better the model is without adaptation, the more often adaptation hurts it (clean and mild corruptions, where the source BN statistics are already right). The harm is small, at most +2.4 points.
    - **CutMix does not protect the hard streams.** It has the best clean error (3.82) but the worst corruption error without adaptation (46.1 at severity 5). It gains the most from adaptation and is rarely harmed in episodic tests, but continual Tent is as unstable as for Standard seed 2: worse than BN-adapt in 2 of 3 runs, collapse up to 0.40, ECE 20.9.
    - **Small batches hurt every model** by 2–3 points for BN-adapt and 2–4 for Tent, and harm 47% of the severity-5 conditions for AugMix.
