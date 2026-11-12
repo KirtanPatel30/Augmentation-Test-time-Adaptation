@@ -2,7 +2,7 @@
 
 **Authors:** Kirtan Patel and Yash Patel
 **Course:** CMPE 252, Fall 2026
-**Status:** Draft. Stage 2 sections (3.2, 4.3–4.6) are filled in; Discussion and Conclusion are still to be written together.
+**Status:** Draft. All sections are written; the Discussion and Conclusion still need review by both authors.
 
 ---
 
@@ -296,9 +296,39 @@ All 6 runs took about 9.05 GPU hours on T4 GPUs, plus about 0.2 hours for timing
 
 On Colab, AugMix + JSD took about 8.6 times longer per epoch than Standard. AugMix is slow because the pictures are edited on the CPU. With 4 CPU workers instead of 2, both AugMix versions ran about 2.2 times faster. Because of this, GPU hours from Colab and Kaggle should not be compared directly.
 
-## 5 Discussion **[Together]**
+## 5 Discussion
 
-**[Together: answer the main question using RQ1–RQ5 and E6. Is adaptation safer for augmentation-trained models? Lower error, but more often harmed in the episodic test; more stable in the continual stream; a periodic reset fixes the drift for Standard and CutMix.]**
+### 5.1 Is Adaptation Safer After Augmentation?
+
+Our question was whether test-time adaptation is safer for a model trained with augmentation. The answer depends on what "safer" means. We see three meanings, and the results do not agree on all of them.
+
+1. **Lower error: yes.** AugMix + JSD has the lowest error in every protocol, with and without adaptation. With Tent, its mean error over the 75 conditions is 9.01%, against 13.43% for Standard and 12.22% for CutMix.
+2. **Harmed less often: no.** Adaptation makes AugMix models worse more often. In the episodic test, BN-adapt harms 49–63% of the conditions for the AugMix models and 19–25% for Standard and CutMix. For Tent it is 21–27% against 5–9%. This is the opposite of H4.
+3. **Fewer large failures: yes, for AugMix + JSD.** In the continual stream, the largest harm for AugMix + JSD is 3.8 points, and 5 of its 6 Tent runs beat BN-adapt. For Standard seed 2 and CutMix, the largest harms are 16.2 and 13.1 points, and continual Tent is often worse than BN-adapt.
+
+So augmentation does not remove the risk of adaptation. It changes its shape: a few large failures become many small ones.
+
+### 5.2 Why AugMix Models Are Harmed More Often
+
+The harm on AugMix models is at low severity and on damage the model already handles, such as brightness, fog, JPEG and mild blur. On these conditions, the BN statistics stored during training are already about right. BN-adapt replaces them with the statistics of one test batch, which adds noise and makes a good model a little worse. The same thing happens on clean pictures, where both methods make every model worse. A Standard model is so bad on most damaged pictures that this small loss is hidden by a large gain. An AugMix model has less to gain, so the small loss shows up as harm more often. Tent wins back most of this loss, which is why its harm rate is less than half of BN-adapt's.
+
+### 5.3 Why Continual Tent Drifts on Standard and CutMix
+
+In the continual stream, Tent never resets, so its errors can build up over 150,000 pictures. On Standard seed 2 and CutMix, the model starts to put too many pictures into a few classes (collapse up to 0.40), and the error grows. On AugMix + JSD the collapse score stays at or below 0.23. One possible reason is that AugMix + JSD makes fewer mistakes at severity 5, so Tent learns from fewer wrong, confident predictions. We did not test this directly.
+
+The two Standard seeds are trained the same way, but continual Tent works on one and fails on the other. CutMix has the best clean error, but it does not help here either. So clean accuracy and training method alone do not tell us whether continual Tent will be stable.
+
+### 5.4 A Simple Fix: Reset
+
+E6 shows that the drift has a simple fix. Resetting Tent every 100 batches takes the error from 25.97% to 18.55% for Standard seed 2 and from 24.18% to 17.53% for CutMix. It removes the harm and the collapse, and the 3 runs agree within 0.02 points. The reset does not need to know when the damage changes. This matches RDumb [10]: in a long stream, a regular reset is a strong and cheap baseline. But the interval matters, and we tested only 3 values.
+
+### 5.5 What This Means in Practice
+
+- **Train with AugMix + JSD if you can.** It gives the lowest error and the most stable continual Tent. It costs more training time (about 8.6 times per epoch on Colab).
+- **Use Tent, not only BN-adapt, with large batches.** Tent beats BN-adapt on 72–75 of the 75 conditions for every model.
+- **Reset Tent regularly in long streams.** Without a reset, one training seed can decide if Tent works.
+- **Be careful when the data is clean or only a little damaged.** Here adaptation often hurts, especially for AugMix models. A check that skips adaptation for such data could help.
+- **Do not trust Tent's confidence.** Tent is less calibrated than BN-adapt for CutMix and AugMix + JSD, and continual Tent is even less calibrated than no adaptation for the AugMix models.
 
 ## 6 Problems and Limitations
 
@@ -320,9 +350,11 @@ On Colab, AugMix + JSD took about 8.6 times longer per epoch than Standard. AugM
 - **Harm can be very small.** With 10,000 pictures per condition, the paired bootstrap finds even small differences, so a "harmed" condition can be worse by only a few tenths of a point. We also do not correct for testing 75 conditions at once: with no real effect, about 2 of 75 conditions would be called harmed by chance.
 - **One network and one dataset.** All results are for ResNet-18 on CIFAR-10-C, and CutMix and AugMix without JSD have only 1 training seed.
 
-## 7 Conclusion **[Together]**
+## 7 Conclusion
 
-**[Together: 3–4 sentences with the main answer and what we would do next.]**
+We trained a ResNet-18 on CIFAR-10 in 4 ways and tested each model with no adaptation, BN-adapt and Tent on CIFAR-10-C. Augmentation with AugMix + JSD gives the lowest error, and it keeps continual Tent stable, with no large failures. But it does not make adaptation safe in every sense: adaptation harms AugMix models more often, by small amounts, on clean pictures and mild damage. For models where continual Tent drifts, resetting it every 100 batches fixes the problem.
+
+In future work, we would test more adaptation methods such as EATA and SAR [11], train more seeds for CutMix and AugMix without JSD, try other networks and datasets, and build a simple check that turns adaptation off when the test data does not need it.
 
 ## References
 
