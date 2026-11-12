@@ -52,8 +52,8 @@ standard_seed1_bn_episodic_bs200,standard_seed1,bn,episodic,200,,,75,6.69,15.817
 standard_seed1_bn_small_batch_bs16,standard_seed1,bn,small_batch,16,,,15,,24.795,24.795,14.524,0.2,0.8,,0.141,0.116,62.571
 standard_seed1_none_episodic_bs200,standard_seed1,none,episodic,200,,,75,4.92,25.898,43.638,17.901,,,,0.851,0.208,359.624
 standard_seed1_tent_continual_bs200_lr0.001,standard_seed1,tent,continual,200,0.001,,15,,18.379,18.379,14.876,0.067,0.933,,0.174,0.133,152.789
-standard_seed1_tent_continual_bs200_lr0.001_rep2,standard_seed1,tent,continual,200,0.001,,15,,20.443,20.443,16.975,,,,0.232,0.164,159.424
-standard_seed1_tent_continual_bs200_lr0.001_rep3,standard_seed1,tent,continual,200,0.001,,15,,19.154,19.154,15.635,,,,0.196,0.14,165.007
+standard_seed1_tent_continual_bs200_lr0.001_rep2,standard_seed1,tent,continual,200,0.001,,15,,20.443,20.443,16.975,0.133,0.8,,0.232,0.164,159.424
+standard_seed1_tent_continual_bs200_lr0.001_rep3,standard_seed1,tent,continual,200,0.001,,15,,19.154,19.154,15.635,0.067,0.933,,0.196,0.14,165.007
 standard_seed1_tent_episodic_bs200_lr0.001,standard_seed1,tent,episodic,200,0.001,,75,5.93,13.271,18.389,8.51,0.093,0.8,1,0.173,0.119,772.266
 standard_seed1_tent_episodic_bs200_lr0.001_shuf1,standard_seed1,tent,episodic,200,0.001,1,15,,18.285,18.285,12.079,0.0,1.0,,0.153,0.122,153.374
 standard_seed1_tent_episodic_bs200_lr0.001_shuf2,standard_seed1,tent,episodic,200,0.001,2,15,,18.079,18.079,11.866,0.0,1.0,,0.16,0.121,153.299
@@ -64,8 +64,8 @@ standard_seed2_bn_episodic_bs200,standard_seed2,bn,episodic,200,,,75,6.86,15.882
 standard_seed2_bn_small_batch_bs16,standard_seed2,bn,small_batch,16,,,15,,24.741,24.741,14.701,0.2,0.8,,0.14,0.117,62.353
 standard_seed2_none_episodic_bs200,standard_seed2,none,episodic,200,,,75,5.03,25.87,43.841,17.221,,,,0.856,0.194,362.216
 standard_seed2_tent_continual_bs200_lr0.001,standard_seed2,tent,continual,200,0.001,,15,,23.381,23.381,20.093,0.2,0.8,,0.28,0.197,153.09
-standard_seed2_tent_continual_bs200_lr0.001_rep2,standard_seed2,tent,continual,200,0.001,,15,,25.803,25.803,22.547,,,,0.348,0.222,164.642
-standard_seed2_tent_continual_bs200_lr0.001_rep3,standard_seed2,tent,continual,200,0.001,,15,,28.738,28.738,25.548,,,,0.405,0.268,164.739
+standard_seed2_tent_continual_bs200_lr0.001_rep2,standard_seed2,tent,continual,200,0.001,,15,,25.803,25.803,22.547,0.267,0.667,,0.348,0.222,164.642
+standard_seed2_tent_continual_bs200_lr0.001_rep3,standard_seed2,tent,continual,200,0.001,,15,,28.738,28.738,25.548,0.333,0.667,,0.405,0.268,164.739
 standard_seed2_tent_episodic_bs200_lr0.001,standard_seed2,tent,episodic,200,0.001,,75,5.69,13.598,18.835,8.961,0.067,0.84,1,0.176,0.121,773.185
 standard_seed2_tent_episodic_bs200_lr0.001_shuf1,standard_seed2,tent,episodic,200,0.001,1,15,,18.877,18.877,12.7,0.0,0.933,,0.167,0.123,153.297
 standard_seed2_tent_episodic_bs200_lr0.001_shuf2,standard_seed2,tent,episodic,200,0.001,2,15,,18.72,18.72,12.604,0.0,1.0,,0.164,0.125,153.811
